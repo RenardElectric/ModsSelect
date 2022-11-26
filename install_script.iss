@@ -4,7 +4,7 @@
 #define MyAppName "ModsSelect"
 #define MyAppVersion "1.0.0"
 #define MyAppPublisher "RenardElectric"
-#define MyAppExeName "ModsSelect_run.exe"
+#define MyAppExeName "ModsSelect.exe"
 #define MyAppAssocName MyAppName + ""
 #define MyAppAssocExt ".exe"
 #define MyAppAssocKey StringChange(MyAppAssocName, " ", "") + MyAppAssocExt
@@ -24,7 +24,7 @@ DisableProgramGroupPage=yes
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
 OutputDir=D:\Antony\PycharmProjects\ModsSelect
-OutputBaseFilename=ModsSelect
+OutputBaseFilename=ModsSelect-setup
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -36,7 +36,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "D:\Antony\PycharmProjects\ModsSelect\*"; DestDir: "{app}"; Excludes: "ModsSelect.exe, instal_script.iss, build.bat, .idea, __pycache__, other, src"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\Antony\PycharmProjects\ModsSelect\*"; DestDir: "{app}"; Excludes: "ModsSelect-setup.exe, instal_script.iss, build.bat, .idea, __pycache__, other, src"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 

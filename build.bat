@@ -2,9 +2,9 @@
 cd D:/Antony/PycharmProjects/ModsSelect
 
 rmdir /s /q dist
-del ModsSelect_run.exe
+del ModsSelect.exe
 
-pyinstaller src/main.py --noconfirm --onefile --console --name "ModsSelect_run" --collect-data sv_ttk
+pyinstaller src/main.py --noconfirm --onefile --console --name "ModsSelect" --collect-data sv_ttk
 
 del ModsSelect.spec
 rmdir /s /q build
