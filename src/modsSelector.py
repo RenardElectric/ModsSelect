@@ -1,7 +1,14 @@
-import parallel_API
+# -*- coding: utf-8 -*-
+"""
+Author: RenardElectric
+License: GNU GPLv3
+Source: ModsSelect
+"""
 
-import time
 import os
+import time
+
+import parallel_API
 
 
 def get_latest_mods_info_separated(mod_list, minecraft_version):

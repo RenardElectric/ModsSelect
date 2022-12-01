@@ -1,15 +1,15 @@
-import parallel_API
+# -*- coding: utf-8 -*-
+"""
+Author: RenardElectric
+License: GNU GPLv3
+Source: ModsSelect
+"""
 
 import json
-import urllib.request
-import urllib.error
-import requests
-from urllib.parse import quote
-from pathlib import Path
-import os
 import time
-from multiprocessing import cpu_count
-from multiprocessing.pool import ThreadPool
+import urllib.error
+import urllib.request
+from urllib.parse import quote
 
 
 def open_url(url):
@@ -46,7 +46,8 @@ def get_mod_request(mod_name):
 
 
 def check_minecraft_version(mod_name, minecraft_version):
-    request = open_url(f'https://api.modrinth.com/v2/project/{mod_name}/version?game_versions=' + quote(f'["{minecraft_version}"]'))
+    request = open_url(
+        f'https://api.modrinth.com/v2/project/{mod_name}/version?game_versions=' + quote(f'["{minecraft_version}"]'))
     if request.read() == b'[]':
         print(f"    {mod_name} is not available for minecraft {minecraft_version}")
         return False
@@ -70,7 +71,8 @@ def get_mod_info(mod_name):
     mod_versions = json.loads(request.read())
     mod_info = []
     for mod_version in mod_versions:
-        version = [mod_version["id"], mod_version["game_versions"], mod_version["version_number"], mod_version["files"][0]["url"]]
+        version = [mod_version["id"], mod_version["game_versions"], mod_version["version_number"],
+                   mod_version["files"][0]["url"]]
         mod_info.append(version)
     return mod_info
 
@@ -104,7 +106,8 @@ def get_mod_versions_name(mod_name):
 
 def get_mod_info_separated(mod_name):
     t0 = time.time()
-    return get_mod_versions_id(mod_name), get_mod_versions(mod_name), get_mod_versions_name(mod_name), mod_name, time.time() - t0
+    return get_mod_versions_id(mod_name), get_mod_versions(mod_name), get_mod_versions_name(
+        mod_name), mod_name, time.time() - t0
 
 
 def get_latest_mod_info(mod_name, minecraft_version):
@@ -183,5 +186,6 @@ def get_list(directory):
 
 def returns_download_mod_url(mod_name, minecraft_version):
     """ returns the url to download the mod and the mod's file name """
-    mod_version_id, minecraft_versions, mod_version, mod_version_url, mod_name, time = get_latest_mod_info_separated(mod_name, minecraft_version)
+    mod_version_id, minecraft_versions, mod_version, mod_version_url, mod_name, time = get_latest_mod_info_separated(
+        mod_name, minecraft_version)
     return mod_version_url, f"{mod_name}~{minecraft_version}~{mod_version}.jar"

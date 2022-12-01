@@ -1,10 +1,17 @@
-import API
+# -*- coding: utf-8 -*-
+"""
+Author: RenardElectric
+License: GNU GPLv3
+Source: ModsSelect
+"""
 
-import requests
-from pathlib import Path
 import time
 from multiprocessing.pool import ThreadPool
+from pathlib import Path
 
+import requests
+
+import API
 import gui_elements
 
 

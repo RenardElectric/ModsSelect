@@ -1,15 +1,23 @@
+# -*- coding: utf-8 -*-
+"""
+Author: RenardElectric
+License: GNU GPLv3
+Source: ModsSelect
+"""
+
 import os
-from tkinter import filedialog
+import threading
 import tkinter as tk
+from tkinter import filedialog
 from tkinter import messagebox
 
 import gui_elements
 import modsSelector
-import threading
 
 mods_directory = ""
 mods_list_directory = ""
 minecraft_version = ""
+
 
 def get_mods_directory():
     return mods_directory
@@ -69,7 +77,8 @@ def find_directory(self):
 def save_list_directory(mods_tree, modslist, text=None):
     selection = gui_elements.get_mods_list_tree().get_mods_selection()
 
-    file = tk.filedialog.asksaveasfile(initialfile='Untitled.json', filetypes=[('Json Document', '*.json')], defaultextension=".json", title=text, initialdir=mods_list_directory)
+    file = tk.filedialog.asksaveasfile(initialfile='Untitled.json', filetypes=[('Json Document', '*.json')],
+                                       defaultextension=".json", title=text, initialdir=mods_list_directory)
     if file is None:
         mods_tree.uncheck_selection_name(selection)
         modslist.update_tree()
@@ -113,7 +122,8 @@ def delete_mods(self):
     if not check_directory(mods_directory):
         messagebox.showerror("Unknown directory", "The selected directory does not exist")
     else:
-        answer = messagebox.askyesnocancel("Delete mods", "Do you want to delete all the mods in this directory instead of the ones selected ?")
+        answer = messagebox.askyesnocancel("Delete mods",
+                                           "Do you want to delete all the mods in this directory instead of the ones selected ?")
         if answer:
             modsSelector.delete_mods(mods_directory)
         elif answer is not None:

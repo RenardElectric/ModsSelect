@@ -1,22 +1,22 @@
 # -*- coding: utf-8 -*-
 """
-Author: Juliette Monsel
+Author: Juliette Monsel and RenardElectric
 License: GNU GPLv3
-Source: This repository
+Source: ttkwidgets and ModsSelect
 
 Treeview with checkboxes at each item and a noticeable disabled style
 """
 
-from tkinter import ttk
-import sv_ttk
-
+import json
 import os
+from tkinter import ttk
+
 import keyboard
+import sv_ttk
 from PIL import Image, ImageTk
 
 import gui_elements
 import tools
-import json
 
 IM_CHECKED_LIGHT_FOCUS = os.path.join("assets/light/check-focus.png")
 IM_CHECKED_LIGHT_PRESSED = os.path.join("assets/light/check-pressed.png")
@@ -29,7 +29,6 @@ IM_UNCHECKED_LIGHT_REST = os.path.join("assets/light/check-unsel-rest.png")
 IM_TRISTATE_LIGHT_FOCUS = os.path.join("assets/light/check-tri-focus.png")
 IM_TRISTATE_LIGHT_PRESSED = os.path.join("assets/light/check-tri-pressed.png")
 IM_TRISTATE_LIGHT_REST = os.path.join("assets/light/check-tri-rest.png")
-
 
 IM_CHECKED_DARK_FOCUS = os.path.join("assets/dark/check-focus.png")
 IM_CHECKED_DARK_PRESSED = os.path.join("assets/dark/check-pressed.png")
@@ -129,7 +128,9 @@ class CheckboxTreeview(ttk.Treeview):
         :type state: str
         """
         tags = self.item(item, "tags")
-        states = ("checked", "unchecked", "tristate", "checked_pressed", "unchecked_pressed", "tristate_pressed", "checked_focus", "unchecked_focus", "tristate_focus")
+        states = (
+        "checked", "unchecked", "tristate", "checked_pressed", "unchecked_pressed", "tristate_pressed", "checked_focus",
+        "unchecked_focus", "tristate_focus")
         new_tags = [t for t in tags if t not in states]
         new_tags.append(state)
         self.item(item, tags=tuple(new_tags))
@@ -477,7 +478,8 @@ class CheckboxTreeview(ttk.Treeview):
         x, y, widget = event.x, event.y, event.widget
         item = self.identify_row(y)
         if not keyboard.is_pressed("shift") and item != "":
-            if self.tag_has("unchecked_pressed", str(self.item_selected)) or self.tag_has("tristate_pressed", str(self.item_selected)):
+            if self.tag_has("unchecked_pressed", str(self.item_selected)) or self.tag_has("tristate_pressed",
+                                                                                          str(self.item_selected)):
                 self._check_ancestor(self.item_selected)
                 self._check_descendant(self.item_selected)
             else:
@@ -485,7 +487,8 @@ class CheckboxTreeview(ttk.Treeview):
                 self._uncheck_ancestor(self.item_selected)
             self.focus_selection(self.selection())
             if gui_elements.get_mods_list_tree() is not None and gui_elements.get_mods_list_tree() is self:
-                if not (self.tag_has("checked", str(self.item_selected)) or self.tag_has("checked_focus", str(self.item_selected))):
+                if not (self.tag_has("checked", str(self.item_selected)) or self.tag_has("checked_focus",
+                                                                                         str(self.item_selected))):
                     self.uncheck_mods_tree(item)
                 self.check_mods_tree()
 

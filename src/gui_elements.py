@@ -1,18 +1,24 @@
+# -*- coding: utf-8 -*-
+"""
+Author: RenardElectric
+License: GNU GPLv3
+Source: ModsSelect
+"""
+
+import ctypes
 import os
+import threading
 import tkinter
+import tkinter as tk
+from tkinter import ttk
+
+import ntkutils
+import sv_ttk
 
 import API
-from tkinter import ttk
-import tkinter as tk
-import ctypes
-
-from CheckboxTreeview import CheckboxTreeview
-
-import sv_ttk, ntkutils
-
-import threading
-import tools
 import parallel_API
+import tools
+from CheckboxTreeview import CheckboxTreeview
 
 # mc.debugging = True
 
@@ -57,7 +63,6 @@ class Commands(ttk.LabelFrame):
         self.directory_entry.grid(row=0, column=0, padx=10, pady=(10, 0), sticky="ew")
         self.directory_entry.bind('<Return>', self.validation_mods_directory_on_return)
 
-
         self.directory_button = ttk.Button(self, text="...", command=lambda: tools.find_directory(self))
         self.directory_button.grid(row=0, column=1, padx=10, pady=(10, 0))
 
@@ -69,16 +74,24 @@ class Commands(ttk.LabelFrame):
         self.mods_management_label = ttk.Label(self)
         self.mods_management_label.grid(row=0, column=4)
 
-        self.download_button = ttk.Button(self.mods_management_label, text="Download Mods", command=lambda: threading.Thread(target=tools.download_mods, args=(self,), daemon=True).start())
+        self.download_button = ttk.Button(self.mods_management_label, text="Download Mods",
+                                          command=lambda: threading.Thread(target=tools.download_mods, args=(self,),
+                                                                           daemon=True).start()
+                                          )
         self.download_button.pack()
 
-        self.delete_button = ttk.Button(self.mods_management_label, text="Delete Mods", command=lambda: tools.delete_mods(self))
+        self.delete_button = ttk.Button(self.mods_management_label, text="Delete Mods",
+                                        command=lambda: tools.delete_mods(self))
         self.delete_button.pack(pady=(10, 0), fill="x")
 
-        self.update_button = ttk.Button(self, text="Update Mods", command=lambda: threading.Thread(target=tools.update_mods, args=(self,), daemon=True).start())
+        self.update_button = ttk.Button(self, text="Update Mods",
+                                        command=lambda: threading.Thread(target=tools.update_mods, args=(self,),
+                                                                         daemon=True).start())
         self.update_button.grid(row=0, column=5, padx=10, pady=(10, 0))
 
-        self.switch = ttk.Checkbutton(self, text="Dark theme", style="Switch.TCheckbutton", variable=tkinter.BooleanVar(self, sv_ttk.get_theme() == "dark"), command=self.parent.change_theme)
+        self.switch = ttk.Checkbutton(self, text="Dark theme", style="Switch.TCheckbutton",
+                                      variable=tkinter.BooleanVar(self, sv_ttk.get_theme() == "dark"),
+                                      command=self.parent.change_theme)
         self.switch.grid(row=0, column=6, columnspan=2, pady=10)
 
         self.change_minecraft_version("")
@@ -223,7 +236,8 @@ class ModsList(ttk.LabelFrame):
         self.mods_list_scrollbar = ttk.Scrollbar(self.list_label)
         self.mods_list_scrollbar.pack(side="right", fill="y")
 
-        mods_list_tree = CheckboxTreeview(self.list_label, height=21, show="tree", yscrollcommand=self.mods_list_scrollbar.set)
+        mods_list_tree = CheckboxTreeview(self.list_label, height=21, show="tree",
+                                          yscrollcommand=self.mods_list_scrollbar.set)
         mods_list_tree.pack(expand=True, fill="y")
 
         self.mods_list_scrollbar.config(command=mods_list_tree.yview)
@@ -232,7 +246,9 @@ class ModsList(ttk.LabelFrame):
         self.directory_entry.insert(0, f"{os.getcwd()}\\lists".replace('\\', '/'))
         tools.validation_directory(self, "mods_list_directory")
 
-        self.create_list_button = ttk.Button(self, text="Create a new mods list", command=lambda: tools.save_list_directory(mods_tree, self, text=f"Save a list with {len(mods_tree.get_checked())} mods as"))
+        self.create_list_button = ttk.Button(self, text="Create a new mods list",
+                                             command=lambda: tools.save_list_directory(mods_tree, self,
+                                                                                       text=f"Save a list with {len(mods_tree.get_checked())} mods as"))
         self.create_list_button.pack(padx=10, pady=(10, 0), fill="x")
 
 

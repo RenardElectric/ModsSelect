@@ -1,8 +1,16 @@
+# -*- coding: utf-8 -*-
+"""
+Author: RenardElectric
+License: GNU GPLv3
+Source: ModsSelect
+"""
+
 import tkinter as tk
 
-# mc.debugging = True
+import darkdetect
+import ntkutils
+import sv_ttk
 
-import sv_ttk, ntkutils, darkdetect
 import gui_elements
 
 
