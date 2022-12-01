@@ -11,23 +11,6 @@ mods_directory = ""
 mods_list_directory = ""
 minecraft_version = ""
 
-
-# def get_directory(directory):
-#     if directory == "mods_directory":
-#         return mods_directory
-#     elif directory == "mods_list_directory":
-#         return mods_list_directory
-
-def resource_path(relative_path):
-    """ Get absolute path to resource, works for dev and for PyInstaller """
-    try:
-        # PyInstaller creates a temp folder and stores path in _MEIPASS
-        base_path = sys._MEIPASS
-    except Exception:
-        base_path = os.path.abspath(".")
-
-    return os.path.join(base_path, relative_path)
-
 def get_mods_directory():
     return mods_directory
 
