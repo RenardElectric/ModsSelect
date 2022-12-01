@@ -57,10 +57,8 @@ def validation_directory(self, directory):
 def find_directory(self):
     global mods_directory
     if str(self.directory_entry.winfo_parent()) == ".!app.!commands":
-        print(mods_directory)
         mods_directory = filedialog.askdirectory(initialdir=mods_directory)
     else:
-        print(mods_list_directory)
         mods_directory = filedialog.askdirectory(initialdir=mods_list_directory)
     if not mods_directory == "":
         self.directory_entry.delete(0, tk.END)
