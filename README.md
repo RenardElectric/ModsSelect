@@ -1,9 +1,10 @@
 # ModsSelect
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/RenardElectric/ModsSelect)](https://github.com/RenardElectric/ModsSelect/releases/latest)
+![GitHub issues](https://img.shields.io/github/issues/RenardElectric/ModsSelect?color=yellow)
+![GitHub](https://img.shields.io/github/license/RenardElectric/ModsSelect)
 
-![GitHub package.json version](https://img.shields.io/github/package-json/v/RenardElectric/modsselect)
 
-ModsSelect is a Python library for dealing with word pluralization.
+ModsSelect is a Python app for minecraft mods.
 
 ## Installation
 
