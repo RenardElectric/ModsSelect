@@ -229,7 +229,7 @@ class ModsList(ttk.LabelFrame):
         self.mods_list_scrollbar.config(command=mods_list_tree.yview)
         self.list = mods_list_tree
 
-        self.directory_entry.insert(0, f"{os.getcwd()}\files")
+        self.directory_entry.insert(0, f"{os.getcwd()}\\lists".replace('\\', '/'))
         tools.validation_directory(self, "mods_list_directory")
 
         self.create_list_button = ttk.Button(self, text="Create a new mods list", command=lambda: tools.save_list_directory(mods_tree, self, text=f"Save a list with {len(mods_tree.get_checked())} mods as"))

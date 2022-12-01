@@ -427,11 +427,12 @@ class CheckboxTreeview(ttk.Treeview):
         self.focus_selection(self.selection())
 
     def uncheck_selection_name(self, selection):
-        for iid in self._get_tree_items():
-            if self.item(iid, "text") in selection:
-                self._uncheck_descendant(iid)
-                self._uncheck_ancestor(iid)
-        self.focus_selection(self.selection())
+        if selection is not None:
+            for iid in self._get_tree_items():
+                if self.item(iid, "text") in selection:
+                    self._uncheck_descendant(iid)
+                    self._uncheck_ancestor(iid)
+            self.focus_selection(self.selection())
 
     def _check_selection(self, selection):
         for iid in self._get_tree_items():

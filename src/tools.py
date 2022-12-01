@@ -56,7 +56,12 @@ def validation_directory(self, directory):
 
 def find_directory(self):
     global mods_directory
-    mods_directory = filedialog.askdirectory()
+    if str(self.directory_entry.winfo_parent()) == ".!app.!commands":
+        print(mods_directory)
+        mods_directory = filedialog.askdirectory(initialdir=mods_directory)
+    else:
+        print(mods_list_directory)
+        mods_directory = filedialog.askdirectory(initialdir=mods_list_directory)
     if not mods_directory == "":
         self.directory_entry.delete(0, tk.END)
         self.directory_entry.insert(0, mods_directory)
@@ -66,7 +71,7 @@ def find_directory(self):
 def save_list_directory(mods_tree, modslist, text=None):
     selection = gui_elements.get_mods_list_tree().get_mods_selection()
 
-    file = tk.filedialog.asksaveasfile(initialfile='Untitled.json', filetypes=[('Json Document', '*.json')], defaultextension=".json", title=text)
+    file = tk.filedialog.asksaveasfile(initialfile='Untitled.json', filetypes=[('Json Document', '*.json')], defaultextension=".json", title=text, initialdir=mods_list_directory)
     if file is None:
         mods_tree.uncheck_selection_name(selection)
         modslist.update_tree()

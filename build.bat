@@ -1,4 +1,4 @@
-#dependencies: sv_ttk,ntkutils,darkdetect,requests,keyboard,Pillow
+dependencies: sv_ttk,ntkutils,darkdetect,requests,keyboard,Pillow
 
 del ModsSelect.exe
 
