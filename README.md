@@ -7,10 +7,15 @@
 ModsSelect is a Python app for minecraft mods.
 
 ## Installation
+soon
 
 ## Usage
+soon
 
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
 to discuss what you would like to change.
+
+## Authors and acknowledgment
+ttkwidgets for the CheckboxTreeview that I modified
