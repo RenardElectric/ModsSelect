@@ -1,5 +1,6 @@
 # ModsSelect
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/RenardElectric/ModsSelect)](https://github.com/RenardElectric/ModsSelect/releases/latest)
+![GitHub all releases](https://img.shields.io/github/downloads/RenardElectric/ModsSelect/total?color=green)
 [![GitHub issues](https://img.shields.io/github/issues/RenardElectric/ModsSelect?color=yellow)](https://github.com/RenardElectric/ModsSelect/issues)
 [![GitHub](https://img.shields.io/github/license/RenardElectric/ModsSelect)](https://github.com/RenardElectric/ModsSelect/blob/master/LICENSE.md)
 
