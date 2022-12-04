@@ -12,12 +12,11 @@ from pathlib import Path
 import requests
 
 import API
-import gui_elements
 
 
 def get_latest_mod_info_separated(args):
-    mod_name, minecraft_version = args[0], args[1]
-    return API.get_latest_mod_info_separated(mod_name, minecraft_version)
+    mod_and_platform, minecraft_version = args[0], args[1]
+    return API.get_latest_mod_info_separated(mod_and_platform, minecraft_version)
 
 
 def get_latest_mods_info_separated_parallel(args):
@@ -25,13 +24,14 @@ def get_latest_mods_info_separated_parallel(args):
     return result
 
 
-def get_mods_info_separated_parallel(args):
-    result = ThreadPool(len(args)).imap_unordered(API.get_mod_info_separated, args)
-    return result
+def returns_mod_dependencies(args):
+    mod_name, minecraft_version = args[0], args[1]
+    t0 = time.time()
+    return API.get_latest_mod_dependencies(mod_name, minecraft_version), mod_name, time.time() - t0
 
 
 def get_dependencies_parallel(args):
-    result = ThreadPool(len(args)).imap_unordered(API.returns_mod_dependencies, args)
+    result = ThreadPool(len(args)).imap_unordered(returns_mod_dependencies, args)
     return result
 
 
@@ -40,8 +40,9 @@ def returns_mods_update_list(args):
     t0 = time.time()
     mod_file, minecraft_version = args[0], args[1]
     mod_components = mod_file.split("~")
-    latest_mod_version_name = API.get_latest_mod_version_name(mod_components[0], minecraft_version)
-    if not mod_components[2].replace(".jar", "") == latest_mod_version_name and latest_mod_version_name is not None:
+    latest_mod_version_name = API.get_latest_mod_version_name([mod_components[0], API.get_mod_site(mod_components[0])],
+                                                              minecraft_version)
+    if not mod_components[2].replace(".jar", "", 1) == latest_mod_version_name and latest_mod_version_name is not None:
         return mod_components[0], minecraft_version, time.time() - t0
 
 
@@ -57,16 +58,16 @@ def download_parallel(args):
 
     returns the mod's name and the time it took to download it """
     t0 = time.time()
-    mod_name, minecraft_version, directory = args[0], args[1], args[2]
-    if gui_elements.get_mods_tree().item(gui_elements.get_mods_tree().get_item_iid(mod_name), "values") != "":
-        url, fn = API.returns_download_mod_url(mod_name, minecraft_version)
-        download_dir = Path(directory)
-        download_dir.mkdir(parents=True, exist_ok=True)
-        response = requests.get(url, stream=True)
-        download_dir.joinpath(fn).write_bytes(response.content)
-        return fn, time.time() - t0
-    else:
-        print(f"    {mod_name} is not available for minecraft {minecraft_version}")
+    mod_and_site, minecraft_version, directory = args[0], args[1], args[2]
+    url, fn = API.returns_download_mod_url(mod_and_site, minecraft_version)
+    if url is None:
+        print(f"    {mod_and_site[0]} is not available for minecraft {minecraft_version}")
+        return
+    download_dir = Path(directory)
+    download_dir.mkdir(parents=True, exist_ok=True)
+    response = requests.get(url, stream=True)
+    download_dir.joinpath(fn).write_bytes(response.content)
+    return fn, time.time() - t0
 
 
 def download_mods_parallel(args):

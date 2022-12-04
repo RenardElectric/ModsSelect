@@ -13,10 +13,12 @@ from tkinter import messagebox
 
 import gui_elements
 import modsSelector
+import API
 
 mods_directory = ""
 mods_list_directory = ""
 minecraft_version = ""
+minecraft_loader = ""
 
 
 def get_mods_directory():
@@ -29,6 +31,10 @@ def get_mods_list_directory():
 
 def get_minecraft_version():
     return minecraft_version
+
+
+def get_minecraft_loader():
+    return minecraft_loader
 
 
 def check_directory(directory):
@@ -103,6 +109,7 @@ def save_list_directory(mods_tree, modslist, text=None):
 
 def update_minecraft_version(commands, mods_class):
     commands.minecraft_version_combo["state"] = "disabled"
+    commands.minecraft_loader_combo["state"] = "disabled"
     commands.update_button["state"] = "disabled"
     commands.download_button["state"] = "disabled"
 
@@ -115,6 +122,25 @@ def update_minecraft_version(commands, mods_class):
     commands.download_button["state"] = "enabled"
     commands.update_button["state"] = "enabled"
     commands.minecraft_version_combo["state"] = "readonly"
+    commands.minecraft_loader_combo["state"] = "readonly"
+
+
+def update_minecraft_loader(commands, mods_class):
+    commands.minecraft_version_combo["state"] = "disabled"
+    commands.minecraft_loader_combo["state"] = "disabled"
+    commands.update_button["state"] = "disabled"
+    commands.download_button["state"] = "disabled"
+
+    global minecraft_loader
+    if not minecraft_loader == commands.minecraft_loader_combo.get():
+        minecraft_loader = commands.minecraft_loader_combo.get()
+        if mods_class is not None:
+            threading.Thread(target=mods_class.update_tree, daemon=True).start()
+
+    commands.download_button["state"] = "enabled"
+    commands.update_button["state"] = "enabled"
+    commands.minecraft_version_combo["state"] = "readonly"
+    commands.minecraft_loader_combo["state"] = "readonly"
 
 
 def delete_mods(self):
@@ -130,7 +156,10 @@ def delete_mods(self):
             if not check_mods_in_directory(mods_directory):
                 messagebox.showerror("Empty directory", "The selected directory has no mods in it")
             else:
-                modsSelector.delete_mods(mods_directory, gui_elements.get_mods_tree().get_checked_name())
+                mods = []
+                for mod in gui_elements.get_mods_tree().get_checked_name():
+                    mods.append([mod, ""])
+                modsSelector.delete_mods(mods_directory, mods)
         else:
             print()
             print("deletion canceled")
@@ -157,10 +186,13 @@ def download_mods(self):
         messagebox.showerror("No selection", "There is no mods selected")
     else:
         answer = messagebox.askyesnocancel("Download dependencies", "Do you want to download the dependencies ?")
+        selected_mods_and_site = []
+        for mod in selected_mods:
+            selected_mods_and_site.append([mod, API.get_mod_site(mod)])
         if answer:
-            modsSelector.download_mods_and_dependencies(selected_mods, minecraft_version, mods_directory)
+            modsSelector.download_mods_and_dependencies(selected_mods_and_site, minecraft_version, mods_directory)
         elif answer is not None:
-            modsSelector.download_mods(selected_mods, minecraft_version, mods_directory)
+            modsSelector.download_mods(selected_mods_and_site, minecraft_version, mods_directory)
         else:
             print()
             print("download canceled")

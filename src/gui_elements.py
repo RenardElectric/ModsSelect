@@ -58,6 +58,9 @@ class Commands(ttk.LabelFrame):
     def change_minecraft_version(self, event):
         tools.update_minecraft_version(self, self.parent.children.get('!mods'))
 
+    def change_minecraft_loader(self, event):
+        tools.update_minecraft_loader(self, self.parent.children.get('!mods'))
+
     def add_widgets(self):
         self.directory_entry = ttk.Entry(self, validatecommand=self.validation_mods_directory)
         self.directory_entry.grid(row=0, column=0, padx=10, pady=(10, 0), sticky="ew")
@@ -66,10 +69,20 @@ class Commands(ttk.LabelFrame):
         self.directory_button = ttk.Button(self, text="...", command=lambda: tools.find_directory(self))
         self.directory_button.grid(row=0, column=1, padx=10, pady=(10, 0))
 
-        self.minecraft_version_combo = ttk.Combobox(self, state="disabled", values=self.fabric_versions, width=5)
-        self.minecraft_version_combo.grid(row=0, column=3, padx=10, pady=(10, 0))
+        self.mods_version_label = ttk.Label(self)
+        self.mods_version_label.grid(row=0, column=3, padx=(0, 10))
+
+        self.minecraft_version_combo = ttk.Combobox(self.mods_version_label, state="disabled",
+                                                    values=self.fabric_versions, width=5)
+        self.minecraft_version_combo.pack()
         self.minecraft_version_combo.current(0)
         self.minecraft_version_combo.bind('<<ComboboxSelected>>', self.change_minecraft_version)
+
+        self.minecraft_loader_combo = ttk.Combobox(self.mods_version_label, state="readonly",
+                                                   values=["fabric", "forge"], width=5)
+        self.minecraft_loader_combo.pack(pady=(10, 0), fill="x")
+        self.minecraft_loader_combo.current(0)
+        self.minecraft_loader_combo.bind('<<ComboboxSelected>>', self.change_minecraft_loader)
 
         self.mods_management_label = ttk.Label(self)
         self.mods_management_label.grid(row=0, column=4)
@@ -95,6 +108,7 @@ class Commands(ttk.LabelFrame):
         self.switch.grid(row=0, column=6, columnspan=2, pady=10)
 
         self.change_minecraft_version("")
+        self.change_minecraft_loader("")
 
 
 class Mods(ttk.LabelFrame):
@@ -109,28 +123,41 @@ class Mods(ttk.LabelFrame):
     def update_tree(self):
 
         commands.minecraft_version_combo["state"] = "disabled"
+        commands.minecraft_loader_combo["state"] = "disabled"
         commands.update_button["state"] = "disabled"
         commands.download_button["state"] = "disabled"
 
-        directory = "config/mods.json"
-        mod_list = API.get_list(directory)
+        for item in mods_tree.get_children("0"):
+            mods_tree.delete(item)
+
+        mod_list = API.get_list("config/mods.json")
 
         inputs = []
 
         for mod in mod_list:
-            inputs.append((mod, tools.get_minecraft_version()))
+            inputs.append(([mod[0], API.get_mod_site(mod[0])], tools.get_minecraft_version()))
+
+        mod_name_list = []
+        mod_name_and_version_list = []
 
         for result in parallel_API.get_latest_mods_info_separated_parallel(inputs):
-            for item in mods_tree.get_children("0"):
-                if mods_tree.item(item, "text") == result[4]:
-                    if result[2] is None:
-                        mods_tree.item(item, values=("",))
-                    else:
-                        mods_tree.item(item, values=result[2])
+            mod_name_list.append(result[5][0])
+            mod_name_and_version_list.append([result[5][0], result[2]])
+
+        mod_name_list_sorted = sorted(mod_name_list)
+
+        index = 1
+        for mod in mod_name_list_sorted:
+            for mod_and_version in mod_name_and_version_list:
+                if mod_and_version[0] == mod and mod_and_version[1] is not None:
+                    mods_tree.insert(parent="0", index="end", iid=index, text=mod_and_version[0],
+                                     values=mod_and_version[1])
+                    index += 1
 
         commands.download_button["state"] = "enabled"
         commands.update_button["state"] = "enabled"
         commands.minecraft_version_combo["state"] = "readonly"
+        commands.minecraft_loader_combo["state"] = "readonly"
 
     def add_widgets(self):
         global mods_tree
@@ -161,10 +188,7 @@ class Mods(ttk.LabelFrame):
 
         mods_tree.set_selection("0")
 
-        directory = "config/mods.json"
-        mod_list = API.get_list(directory)
-        for index, mod in enumerate(mod_list):
-            mods_tree.insert(parent="0", index="end", iid=str(index + 1), text=mod)
+        mods_tree.insert(parent="0", index="end", iid="1", text="initializing")
 
         threading.Thread(target=self.update_tree, daemon=True).start()
 
@@ -216,9 +240,6 @@ class ModsList(ttk.LabelFrame):
 
     def add_widgets(self):
         global mods_list_tree
-
-        # self.load_list_button = ttk.Button(self, text="Load a List", command=lambda: tools.load_list_directory(parent.children.get('!modslist')))
-        # self.load_list_button.grid(row=0, column=0, padx=10, pady=(10, 0))
 
         self.directory_label = ttk.Label(self)
         self.directory_label.pack(fill="x")
