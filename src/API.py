@@ -55,16 +55,19 @@ def get_mod_id(mod_name):
     return None
 
 
-def get_mod_id_from_name_curseforge(mod_name):
+def get_mod_id_from_name_curseforge(mod_name, minecraft_version, loader):
     headers = [
         ['Accept', 'application/json'],
         ['x-api-key', '$2a$10$6kjcBapbGzJ1VCgpjmPjpu.5bBndofdMdl.ovdoIgEifyovJYw7Ee']
     ]
-    url = f"https://api.curseforge.com/v1/mods/search?gameId=432&slug={mod_name}&sortOrder=desc"
+    url = f"https://api.curseforge.com/v1/mods/search?pageSize=1&gameVersion={minecraft_version}&modLoaderType={1 if loader == 'forge' else 4}&gameId=432&slug={mod_name}&sortOrder=desc"
     request = open_url(url, headers)
     if request is None:
         return
-    return json.loads(request.read())["data"][0]["id"]
+    mod = json.loads(request.read())["data"]
+    if len(mod) == 0:
+        return
+    return mod[0]["id"]
 
 
 def get_mod_info_forge(mod_name, minecraft_version, loader):
@@ -72,7 +75,9 @@ def get_mod_info_forge(mod_name, minecraft_version, loader):
         ['Accept', 'application/json'],
         ['x-api-key', '$2a$10$6kjcBapbGzJ1VCgpjmPjpu.5bBndofdMdl.ovdoIgEifyovJYw7Ee']
     ]
-    mod_id = get_mod_id_from_name_curseforge(mod_name)
+    mod_id = get_mod_id_from_name_curseforge(mod_name, minecraft_version, loader)
+    if mod_id is None:
+        return
     url = f"https://api.curseforge.com/v1/mods/{mod_id}/files?pageSize=1&gameVersion={minecraft_version}&modLoaderType={1 if loader == 'forge' else 4}"
     request = open_url(url, headers)
     if request is None:
@@ -151,15 +156,6 @@ def get_latest_mod_dependencies(mod_and_site, minecraft_version):
     return dependencies
 
 
-def get_latest_mod_info_separated(mod_and_site, minecraft_version):
-    t0 = time.time()
-    latest_mod_info = get_latest_mod_info(mod_and_site, minecraft_version, tools.get_minecraft_loader())
-    if not latest_mod_info:
-        return None, None, None, None, None, mod_and_site, time.time() - t0
-    return latest_mod_info[0], latest_mod_info[1], latest_mod_info[2], latest_mod_info[3], latest_mod_info[
-        4], mod_and_site, time.time() - t0
-
-
 def get_mod_name(mod_id, site):
     if site == "curseforge":
         if get_mod_id(mod_id) is False:
@@ -192,8 +188,8 @@ def get_mod_site(mod_name):
             return
 
 
-def returns_download_mod_url(mod_and_platform, minecraft_version):
+def returns_download_mod_url(mod_and_site, minecraft_version):
     """ returns the url to download the mod and the mod's file name """
-    mod_version_id, minecraft_versions, mod_version_name, mod_version_url, mod_dependencies, mod_and_platform, _time = \
-        get_latest_mod_info_separated(mod_and_platform, minecraft_version)
-    return mod_version_url, f"{mod_and_platform[0]}~{minecraft_version}~{mod_version_name}.jar"
+    mod_version_id, minecraft_versions, mod_version_name, mod_version_url, mod_dependencies, mod_and_site = \
+        get_latest_mod_info(mod_and_site, minecraft_version, tools.get_minecraft_loader())
+    return mod_version_url, f"{mod_and_site[0]}~{minecraft_version}~{mod_version_name}.jar"

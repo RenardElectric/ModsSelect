@@ -12,11 +12,17 @@ from pathlib import Path
 import requests
 
 import API
+import tools
 
 
 def get_latest_mod_info_separated(args):
-    mod_and_platform, minecraft_version = args[0], args[1]
-    return API.get_latest_mod_info_separated(mod_and_platform, minecraft_version)
+    t0 = time.time()
+    mod_and_site, minecraft_version = args[0], args[1]
+    latest_mod_info = API.get_latest_mod_info(mod_and_site, minecraft_version, tools.get_minecraft_loader())
+    if not latest_mod_info:
+        return None, None, None, None, None, mod_and_site, time.time() - t0
+    return latest_mod_info[0], latest_mod_info[1], latest_mod_info[2], latest_mod_info[3], latest_mod_info[
+        4], mod_and_site, time.time() - t0
 
 
 def get_latest_mods_info_separated_parallel(args):
