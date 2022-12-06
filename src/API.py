@@ -172,7 +172,7 @@ def get_mod_name(mod_id, site):
         return json.loads(request.read())["slug"]
 
 
-def get_mod_site(mod_name):
+def get_mod_site(mod_name, minecraft_version, loader):
     mod_list = get_list("config/mods.json")
     for mod in mod_list:
         if mod[0] == mod_name:
@@ -182,7 +182,7 @@ def get_mod_site(mod_name):
         return "modrinth"
     except urllib.error.HTTPError:
         try:
-            get_mod_id_from_name_curseforge(mod_name)
+            get_mod_id_from_name_curseforge(mod_name, minecraft_version, loader)
             return "curseforge"
         except urllib.error.HTTPError:
             return
@@ -190,6 +190,6 @@ def get_mod_site(mod_name):
 
 def returns_download_mod_url(mod_and_site, minecraft_version):
     """ returns the url to download the mod and the mod's file name """
-    mod_version_id, minecraft_versions, mod_version_name, mod_version_url, mod_dependencies, mod_and_site = \
+    mod_version_id, minecraft_versions, mod_version_name, mod_version_url, mod_dependencies, loaders = \
         get_latest_mod_info(mod_and_site, minecraft_version, tools.get_minecraft_loader())
     return mod_version_url, f"{mod_and_site[0]}~{minecraft_version}~{mod_version_name}.jar"

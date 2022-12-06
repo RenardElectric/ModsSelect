@@ -10,6 +10,7 @@ import time
 
 import parallel_API
 import API
+import tools
 
 
 def get_latest_mods_info_separated(mod_list, minecraft_version):
@@ -156,7 +157,7 @@ def update_mods(directory, minecraft_version):
     mod_update_list = get_mods_update_list(directory, minecraft_version)
     if not len(mod_update_list) == 0:
         for mods in mod_update_list:
-            update_mod_name_and_platform.append([mods[0], API.get_mod_site(mods[0])])
+            update_mod_name_and_platform.append([mods[0], API.get_mod_site(mods[0], tools.get_minecraft_version(), tools.get_minecraft_loader())])
         delete_mods(directory, update_mod_name_and_platform)
         download_mods(update_mod_name_and_platform, minecraft_version, directory)
         print()

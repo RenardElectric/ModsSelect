@@ -188,7 +188,7 @@ def download_mods(self):
         answer = messagebox.askyesnocancel("Download dependencies", "Do you want to download the dependencies ?")
         selected_mods_and_site = []
         for mod in selected_mods:
-            selected_mods_and_site.append([mod, API.get_mod_site(mod)])
+            selected_mods_and_site.append([mod, API.get_mod_site(mod, get_minecraft_version(), get_minecraft_loader())])
         if answer:
             modsSelector.download_mods_and_dependencies(selected_mods_and_site, minecraft_version, mods_directory)
         elif answer is not None:

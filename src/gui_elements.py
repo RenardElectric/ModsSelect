@@ -135,7 +135,7 @@ class Mods(ttk.LabelFrame):
         inputs = []
 
         for mod in mod_list:
-            inputs.append(([mod[0], API.get_mod_site(mod[0])], tools.get_minecraft_version()))
+            inputs.append(([mod[0], API.get_mod_site(mod[0], tools.get_minecraft_version(), tools.get_minecraft_loader())], tools.get_minecraft_version()))
 
         mod_name_list = []
         mod_name_and_version_list = []

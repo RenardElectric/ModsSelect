@@ -46,7 +46,7 @@ def returns_mods_update_list(args):
     t0 = time.time()
     mod_file, minecraft_version = args[0], args[1]
     mod_components = mod_file.split("~")
-    latest_mod_version_name = API.get_latest_mod_version_name([mod_components[0], API.get_mod_site(mod_components[0])],
+    latest_mod_version_name = API.get_latest_mod_version_name([mod_components[0], API.get_mod_site(mod_components[0], tools.get_minecraft_version(), tools.get_minecraft_loader())],
                                                               minecraft_version)
     if not mod_components[2].replace(".jar", "", 1) == latest_mod_version_name and latest_mod_version_name is not None:
         return mod_components[0], minecraft_version, time.time() - t0
