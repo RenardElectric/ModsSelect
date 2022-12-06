@@ -45,8 +45,15 @@ def main_gui():
     # root.configure(bg='blue')
 
 
+def tick():
+    mods_tree = gui_elements.get_mods_tree()
+    mods_tree.item("0", text=f"Selected Mods ({len(mods_tree.get_checked())}/{len(mods_tree.get_children('0'))})")
+    root.after(100, tick)
+
+
 root = tk.Tk()
 
 if __name__ == "__main__":
     main_gui()
+    tick()
     root.mainloop()

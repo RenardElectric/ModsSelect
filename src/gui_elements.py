@@ -182,7 +182,7 @@ class Mods(ttk.LabelFrame):
         mods_tree.column("#0", anchor="w", width=300)
         mods_tree.column("mod_latest_version", anchor="w")
 
-        mods_tree.insert(parent="", index="end", iid="0", text="Select Mods")
+        mods_tree.insert(parent="", index="end", iid="0", text="Selected Mods")
 
         mods_tree.item("0", open=True)
 
