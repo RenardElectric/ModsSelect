@@ -127,18 +127,18 @@ class Mods(ttk.LabelFrame):
         commands.update_button["state"] = "disabled"
         commands.download_button["state"] = "disabled"
 
-        for item in mods_tree.get_children("0"):
-            mods_tree.delete(item)
-
         mod_list = API.get_list("config/mods.json")
 
         inputs = []
 
         for mod in mod_list:
-            inputs.append(([mod[0], API.get_mod_site(mod[0], tools.get_minecraft_version(), tools.get_minecraft_loader())], tools.get_minecraft_version()))
+            inputs.append(([mod["name"], API.get_mod_site(mod["name"], tools.get_minecraft_version(), tools.get_minecraft_loader())], tools.get_minecraft_version()))
 
         mod_name_list = []
         mod_name_and_version_list = []
+
+        for item in mods_tree.get_children("0"):
+            mods_tree.delete(item)
 
         for result in parallel_API.get_latest_mods_info_separated_parallel(inputs):
             mod_name_list.append(result[5][0])

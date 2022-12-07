@@ -1,43 +1,330 @@
 [
-  ["badpackets", "modrinth"],
-  ["catalogue-fabric", "curseforge"],
-  ["configured-fabric", "curseforge"],
-  ["create", "modrinth"],
-  ["create-fabric", "modrinth"],
-  ["entityculling", "modrinth"],
-  ["extrasounds", "modrinth"],
-  ["fabric-api", "modrinth"],
-  ["fallingtree", "modrinth"],
-  ["ferrite-core", "modrinth"],
-  ["forgetmechunk", "modrinth"],
-  ["gravity-api", "modrinth"],
-  ["guns-without-roses", "modrinth"],
-  ["identity", "curseforge"],
-  ["immersiveportals", "modrinth"],
-  ["indium", "modrinth"],
-  ["iris", "modrinth"],
-  ["item-model-fix", "modrinth"],
-  ["krypton", "modrinth"],
-  ["lambdynamiclights", "modrinth"],
-  ["lazydfu", "modrinth"],
-  ["lithium", "modrinth"],
-  ["memoryleakfix", "modrinth"],
-  ["modmenu", "modrinth"],
-  ["moreculling", "modrinth"],
-  ["mouse-wheelie", "modrinth"],
-  ["no-chat-reports", "modrinth"],
-  ["open-parties-and-claims", "modrinth"],
-  ["pehkui", "modrinth"],
-  ["phosphor", "modrinth"],
-  ["presence-footsteps", "modrinth"],
-  ["reeses-sodium-options", "modrinth"],
-  ["roughly-enough-items", "modrinth"],
-  ["sodium", "modrinth"],
-  ["sodium-extra", "modrinth"],
-  ["sound-physics-remastered", "modrinth"],
-  ["starlight", "modrinth"],
-  ["worldedit", "curseforge"],
-  ["xaeros-minimap", "curseforge"],
-  ["xaeros-world-map", "curseforge"],
-  ["zoomify", "modrinth"]
+     {
+          "name":"badpackets",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"catalogue-fabric",
+          "id":null,
+          "site":"curseforge",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"configured-fabric",
+          "id":null,
+          "site":"curseforge",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"create",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"create-fabric",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"entityculling",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"extrasounds",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"fabric-api",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"fallingtree",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"ferrite-core",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"forgetmechunk",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"gravity-api",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"guns-without-roses",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"identity",
+          "id":null,
+          "site":"curseforge",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"immersiveportals",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"indium",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"iris",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"item-model-fix",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"krypton",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"lambdynamiclights",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"lazydfu",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"lithium",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"memoryleakfix",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"modmenu",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"moreculling",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"mouse-wheelie",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"no-chat-reports",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"open-parties-and-claims",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"pehkui",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"phosphor",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"presence-footsteps",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"reeses-sodium-options",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"roughly-enough-items",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"sodium",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"sodium-extra",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"sound-physics-remastered",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"starlight",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"worldedit",
+          "id":null,
+          "site":"curseforge",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"xaeros-minimap",
+          "id":null,
+          "site":"curseforge",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"xaeros-world-map",
+          "id":null,
+          "site":"curseforge",
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"zoomify",
+          "id":null,
+          "site":"modrinth",
+          "versions":[
+
+          ]
+     }
 ]
