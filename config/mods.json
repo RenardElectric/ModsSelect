@@ -1,277 +1,90 @@
 [
      {
           "name":"badpackets",
-          "id":"FVH3CFm8",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19.1",
-                         "1.19.2"
-                    ],
-                    "version_name":"fabric-0.2.1",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/ftdbN0KK\/versions\/AifWRdyF\/badpackets-fabric-0.2.1.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "fabric",
-                         "quilt"
-                    ]
-               },
-               {
-                    "minecraft_versions":[
-                         "1.19.1",
-                         "1.19.2"
-                    ],
-                    "version_name":"forge-0.2.1",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/ftdbN0KK\/versions\/FVH3CFm8\/badpackets-forge-0.2.1.jar",
-                    "dependencies":[
-
-                    ],
-                    "loaders":[
-                         "forge"
-                    ]
-               }
           ]
      },
      {
           "name":"catalogue-fabric",
-          "id":4009596,
+          "id":null,
           "site":"curseforge",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19.2"
-                    ],
-                    "version_name":"Catalogue-1.6.3",
-                    "version_url":"https:\/\/edge.forgecdn.net\/files\/4009\/596\/catalogue-fabric-1.6.3-1.19.2.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "fabric"
-                    ]
-               }
           ]
      },
      {
           "name":"configured-fabric",
-          "id":4010582,
+          "id":null,
           "site":"curseforge",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19.2"
-                    ],
-                    "version_name":"Configured-2.0.0",
-                    "version_url":"https:\/\/edge.forgecdn.net\/files\/4010\/582\/configured-fabric-2.0.0-1.19.2.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "fabric"
-                    ]
-               }
           ]
      },
      {
           "name":"create",
-          "id":"DI8s7Siu",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19.2"
-                    ],
-                    "version_name":"1.19.2-0.5.0.f",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/LNytGWDc\/versions\/DI8s7Siu\/create-1.19.2-0.5.0.f.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "forge"
-                    ]
-               }
           ]
      },
      {
           "name":"create-fabric",
-          "id":"ZOucvJwc",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19.2"
-                    ],
-                    "version_name":"0.5.0g-796+1.19.2",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/Xbc0uyRg\/versions\/ZOucvJwc\/create-fabric-0.5.0g-796%2B1.19.2.jar",
-                    "dependencies":[
-                         "P7dR8mSH"
-                    ],
-                    "loaders":[
-                         "fabric",
-                         "quilt"
-                    ]
-               }
+
           ]
      },
      {
           "name":"entityculling",
-          "id":"1Vc3QD0W",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19",
-                         "1.19.1",
-                         "1.19.2"
-                    ],
-                    "version_name":"1.5.2-fabric-1.19",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/NNAgCjsB\/versions\/1.5.2-fabric-1.19\/entityculling-fabric-1.5.2-mc1.19.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "fabric"
-                    ]
-               },
-               {
-                    "minecraft_versions":[
-                         "1.19",
-                         "1.19.1",
-                         "1.19.2"
-                    ],
-                    "version_name":"1.5.2-forge-1.19-fix",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/NNAgCjsB\/versions\/1.5.2-forge-1.19-fix\/entityculling-forge-1.5.2-mc1.19.1.jar",
-                    "dependencies":[
-
-                    ],
-                    "loaders":[
-                         "forge"
-                    ]
-               }
           ]
      },
      {
           "name":"extrasounds",
-          "id":"yV1SwVzK",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19.1",
-                         "1.19.2"
-                    ],
-                    "version_name":"2.3.1+1.19.2-1.19.1",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/uPWCQrVL\/versions\/yV1SwVzK\/extrasounds-2.3.1%2B1.19.2-1.19.1.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "fabric"
-                    ]
-               }
           ]
      },
      {
           "name":"fabric-api",
-          "id":"BXfHW8Ww",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19.2"
-                    ],
-                    "version_name":"0.68.0+1.19.2",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/P7dR8mSH\/versions\/BXfHW8Ww\/fabric-api-0.68.0%2B1.19.2.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "fabric"
-                    ]
-               }
           ]
      },
      {
           "name":"fallingtree",
-          "id":"9kSv8gsK",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19.2"
-                    ],
-                    "version_name":"1.19.2-3.10.0",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/Fb4jn8m6\/versions\/9kSv8gsK\/FallingTree-1.19.2-3.10.0.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "fabric",
-                         "forge"
-                    ]
-               }
           ]
      },
      {
           "name":"ferrite-core",
-          "id":"CtXsUUz6",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19.2"
-                    ],
-                    "version_name":"5.0.3-fabric",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/uXXizFIs\/versions\/kwjHqfz7\/ferritecore-5.0.3-fabric.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "fabric",
-                         "quilt"
-                    ]
-               },
-               {
-                    "minecraft_versions":[
-                         "1.19.2"
-                    ],
-                    "version_name":"5.0.3-forge",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/uXXizFIs\/versions\/CtXsUUz6\/ferritecore-5.0.3-forge.jar",
-                    "dependencies":[
-
-                    ],
-                    "loaders":[
-                         "forge"
-                    ]
-               }
           ]
      },
      {
           "name":"forgetmechunk",
-          "id":"yX5SANL7",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.18",
-                         "1.18.1",
-                         "1.18.2",
-                         "1.19",
-                         "1.19.1",
-                         "1.19.2"
-                    ],
-                    "version_name":"1.0.4",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/vRXn3MrA\/versions\/1.0.4\/forgetmechunk-1.0.4-1.18.X-1.19.X.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "fabric"
-                    ]
-               }
           ]
      },
      {
@@ -284,753 +97,234 @@
      },
      {
           "name":"guns-without-roses",
-          "id":"3LTKqzfc",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19",
-                         "1.19.1",
-                         "1.19.2"
-                    ],
-                    "version_name":"1.1.1",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/jrSCjxKy\/versions\/1.1.1\/gunswithoutroses-1.19-1.1.1.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "forge"
-                    ]
-               }
           ]
      },
      {
           "name":"identity",
-          "id":3956107,
+          "id":null,
           "site":"curseforge",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19.2",
-                         "1.19.1"
-                    ],
-                    "version_name":"identity-2.6.0-1.19.1-fabric.jar",
-                    "version_url":"https:\/\/edge.forgecdn.net\/files\/3956\/105\/identity-2.6.0-1.19.1-fabric.jar",
-                    "dependencies":[
-                         419699,
-                         306612
-                    ],
-                    "loaders":[
-                         "fabric"
-                    ]
-               },
-               {
-                    "minecraft_versions":[
-                         "1.19.2",
-                         "1.19.1"
-                    ],
-                    "version_name":"identity-2.6.0-1.19.1-forge.jar",
-                    "version_url":"https:\/\/edge.forgecdn.net\/files\/3956\/107\/identity-2.6.0-1.19.1-forge.jar",
-                    "dependencies":[
-                         419699
-                    ],
-                    "loaders":[
-                         "forge"
-                    ]
-               }
+
           ]
      },
      {
           "name":"immersiveportals",
-          "id":"FSeZJtpR",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19.2"
-                    ],
-                    "version_name":"2.3.1-1.19.2",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/zJpHMkdD\/versions\/FSeZJtpR\/immersive-portals-2.3.1-mc1.19.2-fabric.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "fabric"
-                    ]
-               }
           ]
      },
      {
           "name":"indium",
-          "id":"yTfou6df",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19.2"
-                    ],
-                    "version_name":"1.0.9+mc1.19.2",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/Orvt0mRa\/versions\/yTfou6df\/indium-1.0.9%2Bmc1.19.2.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "fabric",
-                         "quilt"
-                    ]
-               }
           ]
      },
      {
           "name":"iris",
-          "id":"5Ox2LQ1C",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19.2"
-                    ],
-                    "version_name":"1.19.2-v1.4.3",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/YL57xq9U\/versions\/5Ox2LQ1C\/iris-mc1.19.2-1.4.3.jar",
-                    "dependencies":[
-                         "AANobbMI"
-                    ],
-                    "loaders":[
-                         "fabric",
-                         "quilt"
-                    ]
-               }
+
           ]
      },
      {
           "name":"item-model-fix",
-          "id":"vKmXWAvG",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19",
-                         "1.19.1",
-                         "1.19.2"
-                    ],
-                    "version_name":"1.0.3+1.19",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/B3HO5V57\/versions\/1.0.3%2B1.19\/item-model-fix-1.0.3%2B1.19.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "fabric"
-                    ]
-               }
           ]
      },
      {
           "name":"krypton",
-          "id":"vx0mZa04",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19.1",
-                         "1.19.2"
-                    ],
-                    "version_name":"0.2.1",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/fQEb0iXm\/versions\/0.2.1\/krypton-0.2.1.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "fabric"
-                    ]
-               }
           ]
      },
      {
           "name":"lambdynamiclights",
-          "id":"Fp4gUsxF",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19",
-                         "1.19.1",
-                         "1.19.2"
-                    ],
-                    "version_name":"2.1.2+1.19",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/yBW8D80W\/versions\/2.1.2%2B1.19\/lambdynamiclights-2.1.2%2B1.19.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "fabric",
-                         "quilt"
-                    ]
-               }
           ]
      },
      {
           "name":"lazydfu",
-          "id":"4SHylIO9",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19",
-                         "1.19.1",
-                         "1.19.2"
-                    ],
-                    "version_name":"0.1.3",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/hvFnDODi\/versions\/0.1.3\/lazydfu-0.1.3.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "fabric"
-                    ]
-               }
           ]
      },
      {
           "name":"lithium",
-          "id":"IQxlSIiw",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19.2"
-                    ],
-                    "version_name":"mc1.19.2-0.10.2",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/gvQqBUqZ\/versions\/IQxlSIiw\/lithium-fabric-mc1.19.2-0.10.2.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "fabric"
-                    ]
-               }
           ]
      },
      {
           "name":"memoryleakfix",
-          "id":"tlLtHh1w",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19.1",
-                         "1.19.2"
-                    ],
-                    "version_name":"v0.7.0",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/NRjRiSSD\/versions\/v0.7.0\/memoryleakfix-1.19.1-0.7.0.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "fabric",
-                         "quilt"
-                    ]
-               }
           ]
      },
      {
           "name":"modmenu",
-          "id":"4dReZoTJ",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19.2"
-                    ],
-                    "version_name":"4.1.1",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/mOgUt4GM\/versions\/4dReZoTJ\/modmenu-4.1.1.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "fabric",
-                         "quilt"
-                    ]
-               }
           ]
      },
      {
           "name":"moreculling",
-          "id":"xO1K8c7X",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19",
-                         "1.19.1",
-                         "1.19.2"
-                    ],
-                    "version_name":"v0.10.0",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/51shyZVL\/versions\/v0.10.0\/moreculling-1.19.1-0.10.0.jar",
-                    "dependencies":[
-                         "9s6osm5g"
-                    ],
-                    "loaders":[
-                         "fabric",
-                         "quilt"
-                    ]
-               }
+
           ]
      },
      {
           "name":"mouse-wheelie",
-          "id":"f24IuTiJ",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19",
-                         "1.19.1",
-                         "1.19.2"
-                    ],
-                    "version_name":"1.10.2+mc1.19-pre1",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/u5Ic2U1u\/versions\/1.10.2%2Bmc1.19-pre1\/mousewheelie-1.10.2%2Bmc1.19-pre1.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "fabric"
-                    ]
-               }
           ]
      },
      {
           "name":"no-chat-reports",
-          "id":"RNAG69Zu",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19.1",
-                         "1.19.2"
-                    ],
-                    "version_name":"Fabric-1.19.2-v1.13.12",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/qQyHxfxd\/versions\/YuX53PIA\/NoChatReports-FABRIC-1.19.2-v1.13.12.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "fabric",
-                         "quilt"
-                    ]
-               },
-               {
-                    "minecraft_versions":[
-                         "1.19.2"
-                    ],
-                    "version_name":"Forge-1.19.2-v1.5.1",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/qQyHxfxd\/versions\/RNAG69Zu\/NoChatReports-FORGE-1.19.2-v1.5.1.jar",
-                    "dependencies":[
-
-                    ],
-                    "loaders":[
-                         "forge"
-                    ]
-               }
           ]
      },
      {
           "name":"open-parties-and-claims",
-          "id":"QAH7yEkq",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19.1",
-                         "1.19.2"
-                    ],
-                    "version_name":"fabric-1.19.2-0.16.4",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/gF3BGWvG\/versions\/JG10mu9E\/open-parties-and-claims-fabric-1.19.2-0.16.4.jar",
-                    "dependencies":[
-                         "ohNO6lps",
-                         "P7dR8mSH"
-                    ],
-                    "loaders":[
-                         "fabric",
-                         "quilt"
-                    ]
-               },
-               {
-                    "minecraft_versions":[
-                         "1.19.1",
-                         "1.19.2"
-                    ],
-                    "version_name":"forge-1.19.2-0.16.4",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/gF3BGWvG\/versions\/QAH7yEkq\/open-parties-and-claims-forge-1.19.2-0.16.4.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "forge"
-                    ]
-               }
           ]
      },
      {
           "name":"pehkui",
-          "id":"MarwFR48",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.14.4",
-                         "1.15.2",
-                         "1.16.5",
-                         "1.17.1",
-                         "1.18.2",
-                         "1.19",
-                         "1.19.2",
-                         "22w43a"
-                    ],
-                    "version_name":"3.6.0+1.14.4-1.19.3",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/t5W7Jfwy\/versions\/KdbiK6RJ\/Pehkui-3.6.0%2B1.14.4-1.19.3.jar",
-                    "dependencies":[
-                         "P7dR8mSH"
-                    ],
-                    "loaders":[
-                         "fabric",
-                         "quilt"
-                    ]
-               },
-               {
-                    "minecraft_versions":[
-                         "1.19.2"
-                    ],
-                    "version_name":"3.6.0+1.19.2-forge",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/t5W7Jfwy\/versions\/MarwFR48\/Pehkui-3.6.0%2B1.19.2-forge.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "forge"
-                    ]
-               }
           ]
      },
      {
           "name":"phosphor",
-          "id":"Di0Jgej2",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19",
-                         "1.19.1",
-                         "1.19.2"
-                    ],
-                    "version_name":"mc1.19.x-0.8.1",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/hEOCdOgW\/versions\/mc1.19.x-0.8.1\/phosphor-fabric-mc1.19.x-0.8.1.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "fabric"
-                    ]
-               }
           ]
      },
      {
           "name":"presence-footsteps",
-          "id":"IUc6dyrf",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19",
-                         "1.19.1",
-                         "1.19.2"
-                    ],
-                    "version_name":"1.6.3",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/rcTfTZr3\/versions\/IUc6dyrf\/PresenceFootsteps-1.6.3.jar",
-                    "dependencies":[
-                         "P7dR8mSH"
-                    ],
-                    "loaders":[
-                         "fabric"
-                    ]
-               }
+
           ]
      },
      {
           "name":"reeses-sodium-options",
-          "id":"hkSQ9RqT",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19",
-                         "1.19.1",
-                         "1.19.2"
-                    ],
-                    "version_name":"mc1.19.2-1.4.9",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/Bh37bMuy\/versions\/hkSQ9RqT\/reeses_sodium_options-1.4.9%2Bmc1.19.2-build.67.jar",
-                    "dependencies":[
-                         "AANobbMI"
-                    ],
-                    "loaders":[
-                         "fabric"
-                    ]
-               }
+
           ]
      },
      {
           "name":"roughly-enough-items",
-          "id":"TzUtiDrH",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19",
-                         "1.19.1",
-                         "1.19.2"
-                    ],
-                    "version_name":"9.1.577+fabric",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/nfn13YXA\/versions\/KZADcrcr\/RoughlyEnoughItems-9.1.577.jar",
-                    "dependencies":[
-                         "lhGA9TYQ",
-                         "9s6osm5g",
-                         "P7dR8mSH"
-                    ],
-                    "loaders":[
-                         "fabric"
-                    ]
-               },
-               {
-                    "minecraft_versions":[
-                         "1.19",
-                         "1.19.1",
-                         "1.19.2"
-                    ],
-                    "version_name":"9.1.577+forge",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/nfn13YXA\/versions\/TzUtiDrH\/RoughlyEnoughItems-9.1.577.jar",
-                    "dependencies":[
-                         "lhGA9TYQ",
-                         "9s6osm5g"
-                    ],
-                    "loaders":[
-                         "forge"
-                    ]
-               }
+
           ]
      },
      {
           "name":"sodium",
-          "id":"rAfhHfow",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19.2"
-                    ],
-                    "version_name":"mc1.19.2-0.4.4",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/AANobbMI\/versions\/rAfhHfow\/sodium-fabric-mc1.19.2-0.4.4%2Bbuild.18.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "fabric",
-                         "quilt"
-                    ]
-               }
           ]
      },
      {
           "name":"sodium-extra",
-          "id":"1ha6EuaV",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19.2"
-                    ],
-                    "version_name":"mc1.19.2-0.4.14",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/PtjYWJkn\/versions\/1ha6EuaV\/sodium-extra-0.4.14%2Bmc1.19.2-build.80.jar",
-                    "dependencies":[
-                         "AANobbMI",
-                         "P7dR8mSH"
-                    ],
-                    "loaders":[
-                         "fabric"
-                    ]
-               }
+
           ]
      },
      {
           "name":"sound-physics-remastered",
-          "id":"nBLV4bCJ",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19.2"
-                    ],
-                    "version_name":"fabric-1.19.2-1.0.16",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/qyVF9oeo\/versions\/UlywtXTw\/soundphysics-fabric-1.19.2-1.0.16.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "fabric"
-                    ]
-               },
-               {
-                    "minecraft_versions":[
-                         "1.19.2"
-                    ],
-                    "version_name":"forge-1.19.2-1.0.16",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/qyVF9oeo\/versions\/nBLV4bCJ\/soundphysics-forge-1.19.2-1.0.16.jar",
-                    "dependencies":[
-
-                    ],
-                    "loaders":[
-                         "forge"
-                    ]
-               }
           ]
      },
      {
           "name":"starlight",
-          "id":"qH1xCwoC",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19",
-                         "1.19.1",
-                         "1.19.2"
-                    ],
-                    "version_name":"1.1.1+1.19",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/H8CaAYZC\/versions\/1.1.1%2B1.19\/starlight-1.1.1%2Bfabric.ae22326.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "fabric"
-                    ]
-               }
           ]
      },
      {
           "name":"worldedit",
-          "id":3922622,
+          "id":null,
           "site":"curseforge",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19.2",
-                         "1.19.1"
-                    ],
-                    "version_name":"WorldEdit-7.2.12-(Forge-Fabric-for-MC-1.19.2)",
-                    "version_url":"https:\/\/edge.forgecdn.net\/files\/3922\/622\/worldedit-mod-7.2.12.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "fabric",
-                         "forge"
-                    ]
-               }
           ]
      },
      {
           "name":"xaeros-minimap",
-          "id":4127325,
+          "id":null,
           "site":"curseforge",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19.2",
-                         "1.19.1"
-                    ],
-                    "version_name":"v22.16.3-for-Fabric-1.19.2-(or-.1)",
-                    "version_url":"https:\/\/edge.forgecdn.net\/files\/4127\/323\/Xaeros_Minimap_22.16.3_Fabric_1.19.1.jar",
-                    "dependencies":[
-                         306612
-                    ],
-                    "loaders":[
-                         "fabric",
-                         "quilt"
-                    ]
-               },
-               {
-                    "minecraft_versions":[
-                         "1.19.2",
-                         "1.19.1"
-                    ],
-                    "version_name":"v22.16.3-for-Forge-1.19.2-(or-.1)",
-                    "version_url":"https:\/\/edge.forgecdn.net\/files\/4127\/325\/Xaeros_Minimap_22.16.3_Forge_1.19.1.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "forge"
-                    ]
-               }
           ]
      },
      {
           "name":"xaeros-world-map",
-          "id":4127340,
+          "id":null,
           "site":"curseforge",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19.2",
-                         "1.19.1"
-                    ],
-                    "version_name":"v1.28.4-for-Fabric-1.19.2-(or-.1)",
-                    "version_url":"https:\/\/edge.forgecdn.net\/files\/4127\/339\/XaerosWorldMap_1.28.4_Fabric_1.19.1.jar",
-                    "dependencies":[
-                         306612
-                    ],
-                    "loaders":[
-                         "fabric",
-                         "quilt"
-                    ]
-               },
-               {
-                    "minecraft_versions":[
-                         "1.19.2",
-                         "1.19.1"
-                    ],
-                    "version_name":"v1.28.4-for-Forge-1.19.2-(or-.1)",
-                    "version_url":"https:\/\/edge.forgecdn.net\/files\/4127\/340\/XaerosWorldMap_1.28.4_Forge_1.19.1.jar",
-                    "dependencies":[
 
-                    ],
-                    "loaders":[
-                         "forge"
-                    ]
-               }
           ]
      },
      {
           "name":"zoomify",
-          "id":"nls01OIv",
+          "id":null,
           "site":"modrinth",
           "versions":[
-               {
-                    "minecraft_versions":[
-                         "1.19",
-                         "1.19.1",
-                         "1.19.2"
-                    ],
-                    "version_name":"2.8.0",
-                    "version_url":"https:\/\/cdn.modrinth.com\/data\/w7ThoJFB\/versions\/nls01OIv\/Zoomify-2.8.0.jar",
-                    "dependencies":[
-                         "1eAoo2KR",
-                         "Ha28R6CL",
-                         "P7dR8mSH"
-                    ],
-                    "loaders":[
-                         "fabric",
-                         "quilt"
-                    ]
-               }
+
           ]
      }
 ]
