@@ -44,7 +44,7 @@ class Commands(ttk.LabelFrame):
 
         self.columnconfigure(0, weight=1)
 
-        self.fabric_versions = API.get_list("config/fabric_versions.json")
+        self.fabric_versions = API.get_list("config/minecraft_versions.json")
         self.parent = parent
 
         self.add_widgets()
