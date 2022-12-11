@@ -63,7 +63,18 @@ def get_info_in_list(mod_name, minecraft_version, loader):
                         return mod_info
 
 
-def write_mod_info(mod_name, mod_info):
+# def cleat_data():
+#     mods_list = get_list("config/mods.json")
+#     for mod in mods_list:
+#         mod["versions"] = []
+#     file = open('D:\\Antony\\PycharmProjects\\ModsSelect\\config\\mods.json', "w")
+#     file.write(
+#         pd.DataFrame(mods_list, columns=["name", "category", "id", "site", "versions"]).to_json(
+#             orient='records', indent=5))
+#     file.close()
+
+
+def write_mod_info(mod_name, mod_info, site):
     lock.acquire()
     mod_id, minecraft_versions, version_name, version_url, dependencies, loaders = mod_info
     versions = {
@@ -77,10 +88,13 @@ def write_mod_info(mod_name, mod_info):
     for mod in mods_list:
         if mod["name"] == mod_name:
             mod["id"] = mod_id
-            if versions not in mod["versions"]:
-                mod["versions"].append(versions)
-            file = open('D:\Antony\PycharmProjects\ModsSelect\config\mods.json', "w")
-            file.write(pd.DataFrame(mods_list, columns=["name", "id", "site", "versions"]).to_json(orient='records', indent=5))
+            if mod["site"] is None:
+                mod["site"] = site
+            # if versions not in mod["versions"]:
+            #     mod["versions"].append(versions)
+            file = open('D:\\Antony\\PycharmProjects\\ModsSelect\\config\\mods.json', "w")
+            file.write(pd.DataFrame(mods_list, columns=["name", "category", "id", "site", "versions"]).to_json(
+                orient='records', indent=5))
     lock.release()
 
 
@@ -89,7 +103,7 @@ def get_mod_id_from_name_curseforge(mod_name, minecraft_version, loader):
         ['Accept', 'application/json'],
         ['x-api-key', '$2a$10$6kjcBapbGzJ1VCgpjmPjpu.5bBndofdMdl.ovdoIgEifyovJYw7Ee']
     ]
-    url = f"https://api.curseforge.com/v1/mods/search?pageSize=1&gameVersion={minecraft_version}&modLoaderType={1 if loader == 'forge' else 4}&gameId=432&slug={mod_name}&sortOrder=desc"
+    url = f"https://api.curseforge.com/v1/mods/search?pageSize=1&gameVersion={minecraft_version}&modLoaderType={1 if loader == 'forge' else 4 if loader == 'fabric' else 5}&gameId=432&slug={mod_name}&sortOrder=desc"
     request = open_url(url, headers)
     if request is None:
         return
@@ -99,15 +113,21 @@ def get_mod_id_from_name_curseforge(mod_name, minecraft_version, loader):
     return mod[0]["id"]
 
 
-def get_mod_info_forge(mod_name, minecraft_version, loader):
+def get_mod_info_curseforge(mod_name, minecraft_version, loader):
     headers = [
         ['Accept', 'application/json'],
         ['x-api-key', '$2a$10$6kjcBapbGzJ1VCgpjmPjpu.5bBndofdMdl.ovdoIgEifyovJYw7Ee']
     ]
-    mod_id = get_mod_id_from_name_curseforge(mod_name, minecraft_version, loader)
+    mod_list = get_list("config/mods.json")
+    mod_id = None
+    for mod in mod_list:
+        if mod["name"] == mod_name:
+            mod_id = mod["id"]
+    if mod_id is None:
+        mod_id = get_mod_id_from_name_curseforge(mod_name, minecraft_version, loader)
     if mod_id is None:
         return
-    url = f"https://api.curseforge.com/v1/mods/{mod_id}/files?pageSize=1&gameVersion={minecraft_version}&modLoaderType={1 if loader == 'forge' else 4}"
+    url = f"https://api.curseforge.com/v1/mods/{mod_id}/files?pageSize=1&gameVersion={minecraft_version}&modLoaderType={1 if loader == 'forge' else 4 if loader == 'fabric' else 5}"
     request = open_url(url, headers)
     if request is None:
         return
@@ -129,10 +149,10 @@ def get_mod_info_forge(mod_name, minecraft_version, loader):
         dependency = json.loads(str(dependency).replace("'", '"').replace("None", '"None"'))
         if dependency["relationType"] == 3 and dependency["modId"] != "None":
             dependencies.append(dependency["modId"])
-    mod_info = [mod_version["id"], game_versions,
+    mod_info = [mod_version["modId"], game_versions,
                 mod_version["displayName"].replace(" ", "-").replace("\\", '-').replace("/", '-'),
                 mod_version["downloadUrl"], dependencies, loaders]
-    write_mod_info(mod_name, mod_info)
+    write_mod_info(mod_name, mod_info, "curseforge")
     return mod_info
 
 
@@ -142,7 +162,7 @@ def get_mod_info_modrinth(mod_name, minecraft_version, loader):
         ['Accept', 'application/json'],
         ['User-Agent', 'RenardElectric/ModsSelect/2.0.0-beta2 (RenardElectric.perso@gmail.com)']
     ]
-    url = f"https://api.modrinth.com/v2/project/{mod_name}/version?game_versions=%5B%22{minecraft_version}%22%5D&loaders=%5B%22{'forge' if loader == 'forge' else 'fabric'}%22%5D"
+    url = f"https://api.modrinth.com/v2/project/{mod_name}/version?game_versions=%5B%22{minecraft_version}%22%5D&loaders=%5B%22{loader}%22%5D"
     request = open_url(url, headers)
     if request is None:
         return
@@ -158,16 +178,16 @@ def get_mod_info_modrinth(mod_name, minecraft_version, loader):
     mod_info = [mod_version["id"], mod_version["game_versions"],
                 mod_version["version_number"].replace("\\", '-').replace("/", '-'),
                 mod_version["files"][0]["url"], dependencies, mod_version["loaders"]]
-    write_mod_info(mod_name, mod_info)
+    write_mod_info(mod_name, mod_info, "modrinth")
     return mod_info
 
 
-def get_latest_mod_info(mod_and_site, minecraft_version, loader):
+def get_latest_mod_info(mod_and_site, minecraft_version, loader, get_from_list=True):
     mod_info = get_info_in_list(mod_and_site[0], minecraft_version, loader)
-    if mod_info is not None:
+    if mod_info is not None and get_from_list:
         return mod_info
     if mod_and_site[1] == "curseforge":
-        return get_mod_info_forge(mod_and_site[0], minecraft_version, loader)
+        return get_mod_info_curseforge(mod_and_site[0], minecraft_version, loader)
     elif mod_and_site[1] == "modrinth":
         return get_mod_info_modrinth(mod_and_site[0], minecraft_version, loader)
 
@@ -186,7 +206,9 @@ def get_latest_mod_dependencies(mod_and_site, minecraft_version):
         return None
     dependencies = []
     for dependency in latest_mod_info[4]:
-        dependencies.append([get_mod_name(dependency, mod_and_site[1]), mod_and_site[1]])
+        name = get_mod_name(dependency, mod_and_site[1])
+        site = get_mod_site(name, minecraft_version, tools.get_minecraft_loader())
+        dependencies.append([name, site])
     return dependencies
 
 
@@ -204,17 +226,23 @@ def get_mod_name(mod_id, site):
         return json.loads(request.read())["slug"]
 
 
-def get_mod_site(mod_name, minecraft_version, loader):
+def get_mod_site(mod_name, minecraft_version, loader, get_id=False):
     mod_list = get_list("config/mods.json")
     for mod in mod_list:
         if mod["name"] == mod_name:
-            return mod["site"]
+            site = mod["site"]
+            if site is not None:
+                return site
     try:
         open_url(f"https://api.modrinth.com/v2/project/{mod_name}")
+        if get_id:
+            return "modrinth", mod_name
         return "modrinth"
     except urllib.error.HTTPError:
         try:
-            get_mod_id_from_name_curseforge(mod_name, minecraft_version, loader)
+            mod_id = get_mod_id_from_name_curseforge(mod_name, minecraft_version, loader)
+            if get_id:
+                return "curseforge", mod_id
             return "curseforge"
         except urllib.error.HTTPError:
             return

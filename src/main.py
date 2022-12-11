@@ -42,29 +42,9 @@ def main_gui():
     root.update()
 
     ntkutils.placeappincenter(root)
-    # root.configure(bg='blue')
-
-
-mods_tree = None
-old_checked_and_children = []
-
-
-def tick():
-    for i, checked_and_children in enumerate(old_checked_and_children):
-        checked = len(mods_tree.get_checked(str(i)))
-        children = len(mods_tree.get_children(str(i)))
-        if checked_and_children[0] != checked or checked_and_children[1] != children:
-            mods_tree.item(str(i), text=f"category{i+1} ({checked}/{children})")
-            checked_and_children[0] = checked
-            checked_and_children[1] = children
-    root.after(100, tick)
-
 
 root = tk.Tk()
 
 if __name__ == "__main__":
     main_gui()
-    mods_tree = gui_elements.get_mods_tree()
-    old_checked_and_children = [[len(mods_tree.get_checked('0')), len(mods_tree.get_children('0'))]]
-    tick()
     root.mainloop()

@@ -104,14 +104,12 @@ def save_list_directory(mods_tree, modslist, text=None):
     print()
     print(f"Saved a list with {len(Mods_Tree)} mods in it")
 
-    modslist.update_tree()
+    modslist.update_tree(file.name.split("/")[-1])
 
 
 def update_minecraft_version(commands, mods_class):
     commands.minecraft_version_combo["state"] = "disabled"
     commands.minecraft_loader_combo["state"] = "disabled"
-    commands.update_button["state"] = "disabled"
-    commands.download_button["state"] = "disabled"
 
     global minecraft_version
     if not minecraft_version == commands.minecraft_version_combo.get():
@@ -119,8 +117,6 @@ def update_minecraft_version(commands, mods_class):
         if mods_class is not None:
             threading.Thread(target=mods_class.update_tree, daemon=True).start()
 
-    commands.download_button["state"] = "enabled"
-    commands.update_button["state"] = "enabled"
     commands.minecraft_version_combo["state"] = "readonly"
     commands.minecraft_loader_combo["state"] = "readonly"
 
@@ -128,8 +124,6 @@ def update_minecraft_version(commands, mods_class):
 def update_minecraft_loader(commands, mods_class):
     commands.minecraft_version_combo["state"] = "disabled"
     commands.minecraft_loader_combo["state"] = "disabled"
-    commands.update_button["state"] = "disabled"
-    commands.download_button["state"] = "disabled"
 
     global minecraft_loader
     if not minecraft_loader == commands.minecraft_loader_combo.get():
@@ -137,8 +131,6 @@ def update_minecraft_loader(commands, mods_class):
         if mods_class is not None:
             threading.Thread(target=mods_class.update_tree, daemon=True).start()
 
-    commands.download_button["state"] = "enabled"
-    commands.update_button["state"] = "enabled"
     commands.minecraft_version_combo["state"] = "readonly"
     commands.minecraft_loader_combo["state"] = "readonly"
 

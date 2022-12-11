@@ -1,328 +1,351 @@
 [
      {
-          "name":"badpackets",
+          "name":"guns-without-roses",
+          "category":"Equipment",
           "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"catalogue-fabric",
-          "id":null,
-          "site":"curseforge",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"configured-fabric",
-          "id":null,
-          "site":"curseforge",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"create",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"create-fabric",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"entityculling",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"extrasounds",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"fabric-api",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"fallingtree",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"ferrite-core",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"forgetmechunk",
-          "id":null,
-          "site":"modrinth",
+          "site":null,
           "versions":[
 
           ]
      },
      {
           "name":"gravity-api",
+          "category":"Game Mechanics",
           "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"guns-without-roses",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"identity",
-          "id":null,
-          "site":"curseforge",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"immersiveportals",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"indium",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"iris",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"item-model-fix",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"krypton",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"lambdynamiclights",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"lazydfu",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"lithium",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"memoryleakfix",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"modmenu",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"moreculling",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"mouse-wheelie",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"no-chat-reports",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"open-parties-and-claims",
-          "id":null,
-          "site":"modrinth",
+          "site":null,
           "versions":[
 
           ]
      },
      {
           "name":"pehkui",
+          "category":"Game Mechanics",
           "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"phosphor",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"presence-footsteps",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"reeses-sodium-options",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"roughly-enough-items",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"sodium",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"sodium-extra",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"sound-physics-remastered",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"starlight",
-          "id":null,
-          "site":"modrinth",
-          "versions":[
-
-          ]
-     },
-     {
-          "name":"worldedit",
-          "id":null,
-          "site":"curseforge",
+          "site":null,
           "versions":[
 
           ]
      },
      {
           "name":"xaeros-minimap",
+          "category":"Map and Information",
           "id":null,
-          "site":"curseforge",
+          "site":null,
           "versions":[
 
           ]
      },
      {
           "name":"xaeros-world-map",
+          "category":"Map and Information",
           "id":null,
-          "site":"curseforge",
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"entityculling",
+          "category":"Optimization",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"ferrite-core",
+          "category":"Optimization",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"forgetmechunk",
+          "category":"Optimization",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"indium",
+          "category":"Optimization",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"iris",
+          "category":"Optimization",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"krypton",
+          "category":"Optimization",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"lazydfu",
+          "category":"Optimization",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"lithium",
+          "category":"Optimization",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"memoryleakfix",
+          "category":"Optimization",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"moreculling",
+          "category":"Optimization",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"phosphor",
+          "category":"Optimization",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"reeses-sodium-options",
+          "category":"Optimization",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"sodium",
+          "category":"Optimization",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"sodium-extra",
+          "category":"Optimization",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"starlight",
+          "category":"Optimization",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"no-chat-reports",
+          "category":"Social",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"create",
+          "category":"Technology",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"create-fabric",
+          "category":"Technology",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"catalogue-fabric",
+          "category":"Utility & QoL",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"configured-fabric",
+          "category":"Utility & QoL",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"extrasounds",
+          "category":"Utility & QoL",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"fallingtree",
+          "category":"Utility & QoL",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"identity",
+          "category":"Utility & QoL",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"immersiveportals",
+          "category":"Utility & QoL",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"item-model-fix",
+          "category":"Utility & QoL",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"lambdynamiclights",
+          "category":"Utility & QoL",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"modmenu",
+          "category":"Utility & QoL",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"mouse-wheelie",
+          "category":"Utility & QoL",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"open-parties-and-claims",
+          "category":"Utility & QoL",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"presence-footsteps",
+          "category":"Utility & QoL",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"roughly-enough-items",
+          "category":"Utility & QoL",
+          "id":null,
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"sound-physics-remastered",
+          "category":"Utility & QoL",
+          "id":null,
+          "site":null,
           "versions":[
 
           ]
      },
      {
           "name":"zoomify",
+          "category":"Utility & QoL",
           "id":null,
-          "site":"modrinth",
+          "site":null,
+          "versions":[
+
+          ]
+     },
+     {
+          "name":"worldedit",
+          "category":"World Generation",
+          "id":null,
+          "site":null,
           "versions":[
 
           ]

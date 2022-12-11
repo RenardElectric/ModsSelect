@@ -7,10 +7,10 @@ Source: ModsSelect
 
 import ctypes
 import os
-import threading
 import tkinter
 import tkinter as tk
 from tkinter import ttk
+import threading
 
 import ntkutils
 import sv_ttk
@@ -25,6 +25,8 @@ from CheckboxTreeview import CheckboxTreeview
 mods_list_tree = None
 mods_tree = None
 commands = None
+
+lock = threading.Lock()
 
 
 def get_mods_list_tree():
@@ -44,7 +46,7 @@ class Commands(ttk.LabelFrame):
 
         self.columnconfigure(0, weight=1)
 
-        self.fabric_versions = API.get_list("config/minecraft_versions.json")
+        self.minecraft_versions = API.get_list("config/minecraft_versions.json")
         self.parent = parent
 
         self.add_widgets()
@@ -73,13 +75,13 @@ class Commands(ttk.LabelFrame):
         self.mods_version_label.grid(row=0, column=3, padx=(0, 10))
 
         self.minecraft_version_combo = ttk.Combobox(self.mods_version_label, state="disabled",
-                                                    values=self.fabric_versions, width=5)
+                                                    values=self.minecraft_versions, width=5)
         self.minecraft_version_combo.pack()
         self.minecraft_version_combo.current(0)
         self.minecraft_version_combo.bind('<<ComboboxSelected>>', self.change_minecraft_version)
 
         self.minecraft_loader_combo = ttk.Combobox(self.mods_version_label, state="readonly",
-                                                   values=["fabric", "forge"], width=5)
+                                                   values=["fabric", "forge", "quilt"], width=5)
         self.minecraft_loader_combo.pack(pady=(10, 0), fill="x")
         self.minecraft_loader_combo.current(0)
         self.minecraft_loader_combo.bind('<<ComboboxSelected>>', self.change_minecraft_loader)
@@ -124,38 +126,42 @@ class Mods(ttk.LabelFrame):
 
         commands.minecraft_version_combo["state"] = "disabled"
         commands.minecraft_loader_combo["state"] = "disabled"
-        commands.update_button["state"] = "disabled"
-        commands.download_button["state"] = "disabled"
 
         mod_list = API.get_list("config/mods.json")
+        categories = API.get_list("config/categories.json")
 
-        inputs = []
+        for i, category in enumerate(categories):
+            if mods_tree.get_children(str(i)) is not None:
+                for item in mods_tree.get_children(str(i)):
+                    mods_tree.delete(item)
 
-        for mod in mod_list:
-            inputs.append(([mod["name"], API.get_mod_site(mod["name"], tools.get_minecraft_version(), tools.get_minecraft_loader())], tools.get_minecraft_version()))
+        for i, category in enumerate(categories):
+            inputs = []
 
-        mod_name_list = []
-        mod_name_and_version_list = []
+            for mod in mod_list:
+                if mod["category"] == category:
+                    inputs.append(([mod["name"], API.get_mod_site(mod["name"], tools.get_minecraft_version(), tools.get_minecraft_loader())], tools.get_minecraft_version()))
 
-        for item in mods_tree.get_children("0"):
-            mods_tree.delete(item)
+            mod_name_list = []
+            mod_name_and_version_list = []
 
-        for result in parallel_API.get_latest_mods_info_separated_parallel(inputs):
-            mod_name_list.append(result[5][0])
-            mod_name_and_version_list.append([result[5][0], result[2]])
+            if len(inputs) != 0:
+                for result in parallel_API.get_latest_mods_info_separated_parallel(inputs):
+                    mod_name_list.append(result[5][0])
+                    mod_name_and_version_list.append([result[5][0], result[2]])
 
-        mod_name_list_sorted = sorted(mod_name_list)
+                mod_name_list_sorted = sorted(mod_name_list)
 
-        index = 1
-        for mod in mod_name_list_sorted:
-            for mod_and_version in mod_name_and_version_list:
-                if mod_and_version[0] == mod and mod_and_version[1] is not None:
-                    mods_tree.insert(parent="0", index="end", iid=index, text=mod_and_version[0],
-                                     values=mod_and_version[1])
-                    index += 1
+                index = 3
+                for mod in mod_name_list_sorted:
+                    for mod_and_version in mod_name_and_version_list:
+                        if mod_and_version[0] == mod and mod_and_version[1] is not None:
+                            mods_tree.insert(parent=str(i), index="end", iid=len(mods_tree.get_tree_items()), text=mod_and_version[0],
+                                             values=mod_and_version[1])
+                            if mods_tree.tag_has("checked_focus", str(i)) or mods_tree.tag_has("checked", str(i)):
+                                mods_tree.change_state(mods_tree.get_children(str(i))[-1], "checked")
+                            index += 1
 
-        commands.download_button["state"] = "enabled"
-        commands.update_button["state"] = "enabled"
         commands.minecraft_version_combo["state"] = "readonly"
         commands.minecraft_loader_combo["state"] = "readonly"
 
@@ -176,19 +182,17 @@ class Mods(ttk.LabelFrame):
 
         mods_tree.pack(expand=True, fill="both")
 
-        mods_tree.heading('#0', text='Mod Name')
-        mods_tree.heading('mod_latest_version', text='Mod Latest Version')
+        mods_tree.heading('#0', text='Mods (0/0)', command=lambda: mods_tree.check_uncheck_all_tree())
+        mods_tree.heading('mod_latest_version', text='Mods Version')
 
         mods_tree.column("#0", anchor="w", width=300)
         mods_tree.column("mod_latest_version", anchor="w")
 
-        mods_tree.insert(parent="", index="end", iid="0", text="Selected Mods")
-
-        mods_tree.item("0", open=True)
+        categories = API.get_list("config/categories.json")
+        for index, category in enumerate(categories):
+            mods_tree.insert(parent="", index="end", iid=str(index), text=f"{category} (0/0)")
 
         mods_tree.set_selection("0")
-
-        mods_tree.insert(parent="0", index="end", iid="1", text="initializing")
 
         threading.Thread(target=self.update_tree, daemon=True).start()
 
@@ -209,7 +213,7 @@ class ModsList(ttk.LabelFrame):
                 file_pieces.append(piece)
         return ".".join(file_pieces)
 
-    def update_tree(self):
+    def update_tree(self, item_added=None):
         directory = tools.get_mods_list_directory()
 
         if tools.check_directory(directory):
@@ -226,6 +230,12 @@ class ModsList(ttk.LabelFrame):
                 if file.split(".")[-1] == "json":
                     mods_list_tree.insert(parent="", index="end", iid=str(index), text=self.get_file_name(file))
                     index += 1
+
+            if item_added is not None:
+                selection_names.append(item_added)
+                for iid in mods_list_tree.get_tree_items():
+                    if mods_list_tree.item(iid, "text") == item_added:
+                        mods_list_tree.selection_set(iid)
 
             mods_list_tree.check_selection_name(selection_names)
 
@@ -288,28 +298,48 @@ def light_title_bar(window):
 class App(tk.Frame):
     def __init__(self, root):
         super().__init__(root)
+        # API.cleat_data()
 
-        # self.columnconfigure(0, weight=1)
-        # self.rowconfigure(0, weight=1)
-        # Commands(self).grid(row=0, column=0, padx=10, pady=(10, 0), sticky="new")
-        # Tree(self).grid(row=1, column=0, padx=10, pady=(10, 0), sticky="nsew")
         Commands(self).pack(fill="x")
         ModsList(self).pack(pady=(10, 0), side="right", fill="y")
         Mods(self).pack(padx=(0, 10), pady=(10, 0), expand=True, fill="both")
-        # self.configure(bg='blue')
 
         self.root = root
+
+        self.mods = ["Mods", len(mods_tree.get_checked()), len(mods_tree.get_children())]
+        self.categories = []
+        categories = API.get_list("config/categories.json")
+        for index, category in enumerate(categories):
+            self.categories.append(
+                [category, len(mods_tree.get_checked(str(index))), len(mods_tree.get_children(str(index)))])
+
+        self.tick()
 
     def change_theme(self):
         sv_ttk.toggle_theme()
         self.set_title_bar()
         get_mods_list_tree().update_theme()
         get_mods_tree().update_theme()
-        # bg_color = ttk.Style().lookup(".", "background")
-        # self.root.wm_attributes("-transparent", bg_color)
 
     def set_title_bar(self):
         if sv_ttk.get_theme() == "dark":
             ntkutils.dark_title_bar(self.root)
         else:
             light_title_bar(self.root)
+
+    def tick(self):
+        checked = len(mods_tree.get_checked())
+        children = len(mods_tree.get_children_())
+        if self.mods[1] != checked or self.mods[2] != children:
+            mods_tree.heading('#0', text=f"{self.mods[0]} ({checked}/{children})")
+            self.mods[1] = checked
+            self.mods[2] = children
+
+        for i, checked_and_children in enumerate(self.categories):
+            checked = len(mods_tree.get_checked(str(i)))
+            children = len(mods_tree.get_children(str(i)))
+            if checked_and_children[1] != checked or checked_and_children[2] != children:
+                mods_tree.item(str(i), text=f"{checked_and_children[0]} ({checked}/{children})")
+                checked_and_children[1] = checked
+                checked_and_children[2] = children
+        self.root.after(1, self.tick)

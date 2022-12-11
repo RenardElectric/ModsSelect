@@ -17,6 +17,7 @@ from PIL import Image, ImageTk
 
 import gui_elements
 import tools
+import API
 
 IM_CHECKED_LIGHT_FOCUS = os.path.join("assets/light/check-focus.png")
 IM_CHECKED_LIGHT_PRESSED = os.path.join("assets/light/check-pressed.png")
@@ -43,6 +44,15 @@ IM_TRISTATE_DARK_PRESSED = os.path.join("assets/dark/check-tri-pressed.png")
 IM_TRISTATE_DARK_REST = os.path.join("assets/dark/check-tri-rest.png")
 
 
+def _items_equal_sel(items, sel):
+    if not len(items) == len(sel):
+        return False
+    for item in items:
+        if item not in sel:
+            return False
+    return True
+
+
 class CheckboxTreeview(ttk.Treeview):
     """
     :class:`ttk.Treeview` widget with checkboxes left of each item.
@@ -61,7 +71,6 @@ class CheckboxTreeview(ttk.Treeview):
         :param kw: options to be passed on to the :class:`ttk.Treeview` initializer
         """
         self.current_selection = []
-        self.previous_item_selected = [0, False]
         self.item_selected = 0
         ttk.Treeview.__init__(self, master, style='Checkbox.Treeview', **kw)
         # checkboxes are implemented with pictures
@@ -75,9 +84,9 @@ class CheckboxTreeview(ttk.Treeview):
 
         def aux(item):
             self.item(item, open=True)
-            children = self.get_children(item)
-            for c in children:
-                aux(c)
+            _children = self.get_children(item)
+            for _c in _children:
+                aux(_c)
 
         children = self.get_children("")
         for c in children:
@@ -88,9 +97,10 @@ class CheckboxTreeview(ttk.Treeview):
 
         def aux(item):
             self.item(item, open=False)
-            children = self.get_children(item)
-            for c in children:
-                aux(c)
+            _children = self.get_children(item)
+            for _c in _children:
+                aux(_c)
+            self.uncheck_all()
 
         children = self.get_children("")
         for c in children:
@@ -129,8 +139,8 @@ class CheckboxTreeview(ttk.Treeview):
         """
         tags = self.item(item, "tags")
         states = (
-        "checked", "unchecked", "tristate", "checked_pressed", "unchecked_pressed", "tristate_pressed", "checked_focus",
-        "unchecked_focus", "tristate_focus")
+            "checked", "unchecked", "tristate", "checked_pressed", "unchecked_pressed", "tristate_pressed",
+            "checked_focus", "unchecked_focus", "tristate_focus")
         new_tags = [t for t in tags if t not in states]
         new_tags.append(state)
         self.item(item, tags=tuple(new_tags))
@@ -197,20 +207,38 @@ class CheckboxTreeview(ttk.Treeview):
         self.selection_set(items)
         self.focus_selection(items)
 
-    def get_checked(self):
+    def get_children_(self, item=""):
         """Return the list of checked items that do not have any child."""
         checked = []
 
-        def get_checked_children(item):
-            if not self.tag_has("unchecked", item):
-                ch = self.get_children(item)
-                if not ch and (self.tag_has("checked", item) or self.tag_has("checked_focus", item)):
-                    checked.append(item)
-                else:
-                    for c in ch:
-                        get_checked_children(c)
+        def get_children(_item):
+            _ch = self.get_children(_item)
+            if not _ch and int(_item) >= len(API.get_list("config/categories.json")):
+                checked.append(_item)
+            else:
+                for _c in _ch:
+                    get_children(_c)
 
-        ch = self.get_children("")
+        ch = self.get_children(item)
+        for c in ch:
+            get_children(c)
+        return checked
+
+    def get_checked(self, item=""):
+        """Return the list of checked items that do not have any child."""
+        checked = []
+
+        def get_checked_children(_item):
+            if not self.tag_has("unchecked", _item):
+                _ch = self.get_children(_item)
+                if not _ch and (self.tag_has("checked", _item) or self.tag_has("checked_focus", _item) or
+                                self.tag_has("checked_pressed", _item)) and int(_item) >= len(API.get_list("config/categories.json")):
+                    checked.append(_item)
+                else:
+                    for _c in _ch:
+                        get_checked_children(_c)
+
+        ch = self.get_children(item)
         for c in ch:
             get_checked_children(c)
         return checked
@@ -221,12 +249,12 @@ class CheckboxTreeview(ttk.Treeview):
 
         def get_checked_name_children(item):
             if not self.tag_has("unchecked", item):
-                ch = self.get_children(item)
-                if not ch and (self.tag_has("checked", item) or self.tag_has("checked_focus", item)):
+                _ch = self.get_children(item)
+                if not _ch and (self.tag_has("checked", item) or self.tag_has("checked_focus", item)) and int(item) >= len(API.get_list("config/categories.json")):
                     checked_name.append(self.item(item, "text"))
                 else:
-                    for c in ch:
-                        get_checked_name_children(c)
+                    for _c in _ch:
+                        get_checked_name_children(_c)
 
         ch = self.get_children("")
         for c in ch:
@@ -296,7 +324,7 @@ class CheckboxTreeview(ttk.Treeview):
                 # no box is checked
                 self._uncheck_ancestor(parent)
 
-    def _get_tree_items(self):
+    def get_tree_items(self):
         items = []
         for parent in self.get_children():
             items.append(parent)
@@ -304,124 +332,92 @@ class CheckboxTreeview(ttk.Treeview):
                 items.append(child)
         return items
 
-    def _update_selection(self, item):
-        item = int(item)
-        prev_item = self.previous_item_selected
-        int_prev_item = int(prev_item[0])
+    def get_items_order(self):
         items = []
 
+        def get_item_order_children(_item):
+            items.append(_item)
+            for children in self.get_children(_item):
+                get_item_order_children(children)
+
+        for item in self.get_children():
+            get_item_order_children(item)
+        return items
+
+    def get_item_place(self, item):
+        items = self.get_items_order()
+        for place, name in enumerate(items):
+            if name == item:
+                return place
+
+    def _update_selection(self, initial_item):
+        item = self.get_item_place(initial_item)
+        items = []
+        self.previous_item = self.item_selected
+
         if keyboard.is_pressed("shift"):
+            items_order = self.get_items_order()
 
-            if not prev_item[1]:
-                self.previous_item_selected[0] = self.item_selected
-                self.previous_item_selected[1] = True
-                prev_item = self.previous_item_selected
-                int_prev_item = int(prev_item[0])
-
-            if int_prev_item < item:
-                for iid in self._get_tree_items():
-                    if item >= int(iid) >= int_prev_item:
-                        items.append(iid)
-            elif int_prev_item > item:
-                for iid in self._get_tree_items():
-                    if item <= int(iid) <= int_prev_item:
-                        items.append(iid)
+            item_place = self.item_selected
+            if item_place < item:
+                while item >= item_place >= self.previous_item:
+                    items.append(items_order[item_place])
+                    item_place += 1
+            elif item_place > item:
+                while item <= item_place <= self.previous_item:
+                    items.append(items_order[item_place])
+                    item_place -= 1
             else:
-                for iid in self._get_tree_items():
-                    if int(iid) >= item:
-                        items.append(iid)
+                while item_place < len(items_order):
+                    items.append(items_order[item_place])
+                    item_place += 1
 
-            if self._is_selection_checked(items) and self._items_equal_sel(items, self.current_selection):
+            if self._is_selection_checked(items) and _items_equal_sel(items, self.current_selection):
                 self.uncheck_selection(items)
-                self._uncheck_descendant(self.item_selected)
-                self._uncheck_ancestor(self.item_selected)
+                self._uncheck_descendant(initial_item)
+                self._uncheck_ancestor(initial_item)
             else:
                 self._check_selection(items)
-                self._check_ancestor(self.item_selected)
-                self._check_descendant(self.item_selected)
-
-            self._unfocus_all(items)
-            self.focus_selection(items)
+                self._check_ancestor(initial_item)
+                self._check_descendant(initial_item)
         else:
-            self.previous_item_selected[0] = self.item_selected
-            self.previous_item_selected[1] = False
             self.item_selected = item
-            items.append(item)
-            self._unfocus_all(items)
-            self.focus_selection(items)
+            items.append(self.get_items_order()[item])
 
-            self._press_item(item)
-
-        return items
+        self.current_selection = items
 
     def _is_selection_checked(self, sel):
         for iid in sel:
-            if not self.tag_has("checked_focus", iid):
+            if not (self.tag_has("checked_focus", iid) or self.tag_has("checked", iid)):
                 return False
         return True
 
-    def _unpress_all(self, selection):
-        for iid in self._get_tree_items():
-            if iid not in selection:
-                if self.tag_has("unchecked_pressed", iid):
-                    self.change_state(iid, "unchecked")
-                elif self.tag_has("tristate_pressed", iid):
-                    self.change_state(iid, "tristate")
-                elif self.tag_has("checked_pressed", iid):
-                    self.change_state(iid, "checked")
+    def _unpress_all(self):
+        for iid in self.get_tree_items():
+            if self.tag_has("unchecked_pressed", iid):
+                self.change_state(iid, "unchecked")
+            elif self.tag_has("tristate_pressed", iid):
+                self.change_state(iid, "tristate")
+            elif self.tag_has("checked_pressed", iid):
+                self.change_state(iid, "checked")
 
-    def _unfocus_all(self, selection):
-        for iid in self._get_tree_items():
-            if iid not in selection:
-                if self.tag_has("unchecked_focus", iid):
-                    self.change_state(iid, "unchecked")
-                elif self.tag_has("tristate_focus", iid):
-                    self.change_state(iid, "tristate")
-                elif self.tag_has("checked_focus", iid):
-                    self.change_state(iid, "checked")
-
-    def uncheck_all(self, selection):
-        for iid in self._get_tree_items():
-            if iid not in selection:
-                if self.tag_has("tristate", iid):
-                    self.change_state(iid, "unchecked")
-                elif self.tag_has("tristate_focus", iid):
-                    self.change_state(iid, "unchecked_focus")
-                elif self.tag_has("checked", iid):
-                    self.change_state(iid, "unchecked")
-                elif self.tag_has("checked_focus", iid):
-                    self.change_state(iid, "unchecked_focus")
+    def _unfocus_all(self):
+        for iid in self.get_tree_items():
+            if self.tag_has("unchecked_focus", iid):
+                self.change_state(iid, "unchecked")
+            elif self.tag_has("tristate_focus", iid):
+                self.change_state(iid, "tristate")
+            elif self.tag_has("checked_focus", iid):
+                self.change_state(iid, "checked")
 
     def uncheck_selection(self, selection):
-        for iid in self._get_tree_items():
+        for iid in self.get_tree_items():
             if iid in selection:
-                if self.tag_has("tristate", iid):
-                    self.change_state(iid, "unchecked")
-                elif self.tag_has("tristate_focus", iid):
-                    self.change_state(iid, "unchecked_focus")
-                elif self.tag_has("checked", iid):
-                    self.change_state(iid, "unchecked")
-                elif self.tag_has("checked_focus", iid):
-                    self.change_state(iid, "unchecked_focus")
-
-    def check_selection(self, selection):
-        for iid in self._get_tree_items():
-            if iid in selection:
-                if self.tag_has("tristate", iid):
-                    self.change_state(iid, "checked")
-                elif self.tag_has("tristate_focus", iid):
-                    self.change_state(iid, "checked_focus")
-                elif self.tag_has("unchecked", iid):
-                    self.change_state(iid, "unchecked")
-                elif self.tag_has("unchecked_focus", iid):
-                    self.change_state(iid, "checked_focus")
-
-    def check_only_selection(self, selection):
-        self.uncheck_all([])
-        self.check_selection_name(selection)
+                self._uncheck_descendant(iid)
+                self._uncheck_ancestor(iid)
 
     def check_selection_name(self, selection):
-        for iid in self._get_tree_items():
+        for iid in self.get_tree_items():
             if self.item(iid, "text") in selection:
                 self._check_ancestor(iid)
                 self._check_descendant(iid)
@@ -429,16 +425,29 @@ class CheckboxTreeview(ttk.Treeview):
 
     def uncheck_selection_name(self, selection):
         if selection is not None:
-            for iid in self._get_tree_items():
+            for iid in self.get_tree_items():
                 if self.item(iid, "text") in selection:
                     self._uncheck_descendant(iid)
                     self._uncheck_ancestor(iid)
             self.focus_selection(self.selection())
 
     def _check_selection(self, selection):
-        for iid in self._get_tree_items():
+        for iid in self.get_tree_items():
             if iid in selection:
-                self.change_state(iid, "checked_focus")
+                self._check_ancestor(iid)
+                self._check_descendant(iid)
+
+    def check_uncheck_all_tree(self):
+        selection = self.selection()
+        if len(self.get_checked()) == len(self.get_tree_items()) - len(API.get_list("config/categories.json")):
+            for iid in self.get_tree_items():
+                self._uncheck_ancestor(iid)
+                self._uncheck_descendant(iid)
+        else:
+            for iid in self.get_tree_items():
+                self._check_ancestor(iid)
+                self._check_descendant(iid)
+        self.focus_selection(selection)
 
     def _press_item(self, item):
         if self.tag_has("unchecked", item) or self.tag_has("unchecked_focus", item):
@@ -457,44 +466,44 @@ class CheckboxTreeview(ttk.Treeview):
             elif not (self.tag_has("unchecked_focus", iid) or self.tag_has("tristate_focus", iid)):
                 self.change_state(iid, "checked_focus")
 
-    def _items_equal_sel(self, items, sel):
-        if not len(items) == len(sel):
-            return False
-        for item in items:
-            if item not in sel:
-                return False
-        return True
-
     def _box_pressed(self, event):
         """Check or uncheck box when clicked."""
         x, y, widget = event.x, event.y, event.widget
+        elem = widget.identify("element", x, y)
         item = self.identify_row(y)
         if item != "":
-            items = self._update_selection(item)
-            self.current_selection = items
+            self._update_selection(item)
+            self._unfocus_all()
+            self.focus_selection([item])
+            if keyboard.is_pressed("shift"):
+                self.focus_selection(self.current_selection)
+            elif elem == "image" or elem == "text":
+                self._unpress_all()
+                self._press_item(item)
 
     def _box_click(self, event):
         """Check or uncheck box when clicked."""
         x, y, widget = event.x, event.y, event.widget
-        item = self.identify_row(y)
-        if not keyboard.is_pressed("shift") and item != "":
-            if self.tag_has("unchecked_pressed", str(self.item_selected)) or self.tag_has("tristate_pressed",
-                                                                                          str(self.item_selected)):
-                self._check_ancestor(self.item_selected)
-                self._check_descendant(self.item_selected)
-            else:
-                self._uncheck_descendant(self.item_selected)
-                self._uncheck_ancestor(self.item_selected)
-            self.focus_selection(self.selection())
-            if gui_elements.get_mods_list_tree() is not None and gui_elements.get_mods_list_tree() is self:
-                if not (self.tag_has("checked", str(self.item_selected)) or self.tag_has("checked_focus",
-                                                                                         str(self.item_selected))):
-                    self.uncheck_mods_tree(item)
-                self.check_mods_tree()
+        elem = widget.identify("element", x, y)
+        item = self.get_items_order()[self.item_selected]
+        if elem == "image" or elem == "text":
+            if not keyboard.is_pressed("shift"):
+
+                if self.tag_has("unchecked_pressed", item) or self.tag_has("tristate_pressed", item):
+                    self._check_ancestor(item)
+                    self._check_descendant(item)
+                else:
+                    self._uncheck_descendant(item)
+                    self._uncheck_ancestor(item)
+                if gui_elements.get_mods_list_tree() is not None and gui_elements.get_mods_list_tree() is self:
+                    if not (self.tag_has("checked", item) or self.tag_has("checked_focus", item)):
+                        self.uncheck_mods_tree(item)
+                    self.check_mods_tree()
+        self.focus_selection([item])
 
     def get_mods_selection_iid(self, iid, directory):
         selection = []
-        mods = json.loads(open(f'{directory}\{self.item(iid, "text")}', "r").read())
+        mods = json.loads(open(f'{directory}\\{self.item(iid, "text")}', "r").read())
         for mod in mods:
             selection.append(mod)
         return selection
