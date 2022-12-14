@@ -38,63 +38,30 @@ def open_url(url, headers=None):
 
 
 def get_list(directory):
-    f = open(directory, "r").read()
-    return json.loads(f)
-
-
-def mod_name_in_list(mod_name):
-    mod_list = get_list("config/mods.json")
-    for mod in mod_list:
-        if mod[0] == mod_name:
-            return True
-    return False
-
-
-def get_info_in_list(mod_name, minecraft_version, loader):
-    mod_list = get_list("config/mods.json")
-    for mod in mod_list:
-        if mod["name"] == mod_name:
-            mod_versions = mod["versions"]
-            if mod_versions is not []:
-                for version in mod_versions:
-                    if minecraft_version in version["minecraft_versions"] and loader in version["loaders"]:
-                        mod_info = [mod["id"], version["minecraft_versions"], version["version_name"],
-                                    version["version_url"], version["dependencies"], version["loaders"]]
-                        return mod_info
-
-
-# def cleat_data():
-#     mods_list = get_list("config/mods.json")
-#     for mod in mods_list:
-#         mod["versions"] = []
-#     file = open('D:\\Antony\\PycharmProjects\\ModsSelect\\config\\mods.json', "w")
-#     file.write(
-#         pd.DataFrame(mods_list, columns=["name", "category", "id", "site", "versions"]).to_json(
-#             orient='records', indent=5))
-#     file.close()
+    lock.acquire()
+    f = open(directory, "r")
+    content = f.read()
+    f.close()
+    lock.release()
+    return json.loads(content)
 
 
 def write_mod_info(mod_name, mod_info, site):
     lock.acquire()
     mod_id, minecraft_versions, version_name, version_url, dependencies, loaders = mod_info
-    versions = {
-        "minecraft_versions": minecraft_versions,
-        "version_name": version_name,
-        "version_url": version_url,
-        "dependencies": dependencies,
-        "loaders": loaders
-    }
-    mods_list = get_list("config/mods.json")
+    f = open("config/mods.json", "r")
+    content = f.read()
+    f.close()
+    mods_list = json.loads(content)
+    mods_list[0]["id"] = 0
     for mod in mods_list:
         if mod["name"] == mod_name:
             mod["id"] = mod_id
             if mod["site"] is None:
                 mod["site"] = site
-            # if versions not in mod["versions"]:
-            #     mod["versions"].append(versions)
-            file = open('D:\\Antony\\PycharmProjects\\ModsSelect\\config\\mods.json', "w")
-            file.write(pd.DataFrame(mods_list, columns=["name", "category", "id", "site", "versions"]).to_json(
-                orient='records', indent=5))
+    file = open('config/mods.json', "w")
+    file.write(pd.DataFrame(mods_list, columns=["name", "category", "id", "site"]).to_json(orient='records', indent=5))
+    file.close()
     lock.release()
 
 
@@ -149,9 +116,7 @@ def get_mod_info_curseforge(mod_name, minecraft_version, loader):
         dependency = json.loads(str(dependency).replace("'", '"').replace("None", '"None"'))
         if dependency["relationType"] == 3 and dependency["modId"] != "None":
             dependencies.append(dependency["modId"])
-    mod_info = [mod_version["modId"], game_versions,
-                mod_version["displayName"].replace(" ", "-").replace("\\", '-').replace("/", '-'),
-                mod_version["downloadUrl"], dependencies, loaders]
+    mod_info = [mod_version["modId"], game_versions, mod_version["displayName"].replace(" ", "-").replace("\\", '-').replace("/", '-'), mod_version["downloadUrl"], dependencies, loaders]
     write_mod_info(mod_name, mod_info, "curseforge")
     return mod_info
 
@@ -175,17 +140,12 @@ def get_mod_info_modrinth(mod_name, minecraft_version, loader):
         dependency = json.loads(str(dependency).replace("'", '"').replace("None", '"None"'))
         if dependency["dependency_type"] == "required" and dependency["project_id"] != "None":
             dependencies.append(dependency["project_id"])
-    mod_info = [mod_version["id"], mod_version["game_versions"],
-                mod_version["version_number"].replace("\\", '-').replace("/", '-'),
-                mod_version["files"][0]["url"], dependencies, mod_version["loaders"]]
+    mod_info = [mod_version["id"], mod_version["game_versions"], mod_version["version_number"].replace("\\", '-').replace("/", '-'), mod_version["files"][0]["url"], dependencies, mod_version["loaders"]]
     write_mod_info(mod_name, mod_info, "modrinth")
     return mod_info
 
 
-def get_latest_mod_info(mod_and_site, minecraft_version, loader, get_from_list=True):
-    mod_info = get_info_in_list(mod_and_site[0], minecraft_version, loader)
-    if mod_info is not None and get_from_list:
-        return mod_info
+def get_latest_mod_info(mod_and_site, minecraft_version, loader):
     if mod_and_site[1] == "curseforge":
         return get_mod_info_curseforge(mod_and_site[0], minecraft_version, loader)
     elif mod_and_site[1] == "modrinth":
@@ -194,20 +154,20 @@ def get_latest_mod_info(mod_and_site, minecraft_version, loader, get_from_list=T
 
 def get_latest_mod_version_name(mod_and_site, minecraft_version):
     """ returns the version of the latest mod's minecraft version, if it cannot find throws an error """
-    latest_mod_info = get_latest_mod_info(mod_and_site, minecraft_version, tools.get_minecraft_loader())
+    latest_mod_info = get_latest_mod_info(mod_and_site, minecraft_version, tools.minecraft_loader)
     if not latest_mod_info:
         return None
     return latest_mod_info[2]
 
 
 def get_latest_mod_dependencies(mod_and_site, minecraft_version):
-    latest_mod_info = get_latest_mod_info(mod_and_site, minecraft_version, tools.get_minecraft_loader())
+    latest_mod_info = get_latest_mod_info(mod_and_site, minecraft_version, tools.minecraft_loader)
     if not latest_mod_info:
         return None
     dependencies = []
     for dependency in latest_mod_info[4]:
         name = get_mod_name(dependency, mod_and_site[1])
-        site = get_mod_site(name, minecraft_version, tools.get_minecraft_loader())
+        site = get_mod_site(name, minecraft_version, tools.minecraft_loader)
         dependencies.append([name, site])
     return dependencies
 
@@ -251,5 +211,5 @@ def get_mod_site(mod_name, minecraft_version, loader, get_id=False):
 def returns_download_mod_url(mod_and_site, minecraft_version):
     """ returns the url to download the mod and the mod's file name """
     mod_version_id, minecraft_versions, mod_version_name, mod_version_url, mod_dependencies, loaders = \
-        get_latest_mod_info(mod_and_site, minecraft_version, tools.get_minecraft_loader())
+        get_latest_mod_info(mod_and_site, minecraft_version, tools.minecraft_loader)
     return mod_version_url, f"{mod_and_site[0]}~{minecraft_version}~{mod_version_name}.jar"

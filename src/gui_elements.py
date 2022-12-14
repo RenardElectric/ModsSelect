@@ -9,32 +9,25 @@ import ctypes
 import os
 import tkinter
 import tkinter as tk
+from multiprocessing.pool import ThreadPool
 from tkinter import ttk
 import threading
 
 import ntkutils
 import sv_ttk
+from tqdm import tqdm
 
 import API
 import parallel_API
 import tools
 from CheckboxTreeview import CheckboxTreeview
 
-# mc.debugging = True
-
 mods_list_tree = None
 mods_tree = None
 commands = None
+progressbar = None
 
 lock = threading.Lock()
-
-
-def get_mods_list_tree():
-    return mods_list_tree
-
-
-def get_mods_tree():
-    return mods_tree
 
 
 class Commands(ttk.LabelFrame):
@@ -74,14 +67,12 @@ class Commands(ttk.LabelFrame):
         self.mods_version_label = ttk.Label(self)
         self.mods_version_label.grid(row=0, column=3, padx=(0, 10))
 
-        self.minecraft_version_combo = ttk.Combobox(self.mods_version_label, state="disabled",
-                                                    values=self.minecraft_versions, width=5)
+        self.minecraft_version_combo = ttk.Combobox(self.mods_version_label, state="disabled", values=self.minecraft_versions, width=5)
         self.minecraft_version_combo.pack()
         self.minecraft_version_combo.current(0)
         self.minecraft_version_combo.bind('<<ComboboxSelected>>', self.change_minecraft_version)
 
-        self.minecraft_loader_combo = ttk.Combobox(self.mods_version_label, state="readonly",
-                                                   values=["fabric", "forge", "quilt"], width=5)
+        self.minecraft_loader_combo = ttk.Combobox(self.mods_version_label, state="readonly", values=["fabric", "forge", "quilt"], width=5)
         self.minecraft_loader_combo.pack(pady=(10, 0), fill="x")
         self.minecraft_loader_combo.current(0)
         self.minecraft_loader_combo.bind('<<ComboboxSelected>>', self.change_minecraft_loader)
@@ -89,24 +80,16 @@ class Commands(ttk.LabelFrame):
         self.mods_management_label = ttk.Label(self)
         self.mods_management_label.grid(row=0, column=4)
 
-        self.download_button = ttk.Button(self.mods_management_label, text="Download Mods",
-                                          command=lambda: threading.Thread(target=tools.download_mods, args=(self,),
-                                                                           daemon=True).start()
-                                          )
+        self.download_button = ttk.Button(self.mods_management_label, text="Download Mods", command=lambda: threading.Thread(target=tools.download_mods, args=(self,), daemon=True).start())
         self.download_button.pack()
 
-        self.delete_button = ttk.Button(self.mods_management_label, text="Delete Mods",
-                                        command=lambda: tools.delete_mods(self))
+        self.delete_button = ttk.Button(self.mods_management_label, text="Delete Mods", command=lambda: tools.delete_mods(self))
         self.delete_button.pack(pady=(10, 0), fill="x")
 
-        self.update_button = ttk.Button(self, text="Update Mods",
-                                        command=lambda: threading.Thread(target=tools.update_mods, args=(self,),
-                                                                         daemon=True).start())
+        self.update_button = ttk.Button(self, text="Update Mods", command=lambda: threading.Thread(target=tools.update_mods, args=(self,), daemon=True).start())
         self.update_button.grid(row=0, column=5, padx=10, pady=(10, 0))
 
-        self.switch = ttk.Checkbutton(self, text="Dark theme", style="Switch.TCheckbutton",
-                                      variable=tkinter.BooleanVar(self, sv_ttk.get_theme() == "dark"),
-                                      command=self.parent.change_theme)
+        self.switch = ttk.Checkbutton(self, text="Dark theme", style="Switch.TCheckbutton", variable=tkinter.BooleanVar(self, sv_ttk.get_theme() == "dark"), command=self.parent.change_theme)
         self.switch.grid(row=0, column=6, columnspan=2, pady=10)
 
         self.change_minecraft_version("")
@@ -127,40 +110,20 @@ class Mods(ttk.LabelFrame):
         commands.minecraft_version_combo["state"] = "disabled"
         commands.minecraft_loader_combo["state"] = "disabled"
 
-        mod_list = API.get_list("config/mods.json")
         categories = API.get_list("config/categories.json")
-
+        args = []
         for i, category in enumerate(categories):
             if mods_tree.get_children(str(i)) is not None:
                 for item in mods_tree.get_children(str(i)):
                     mods_tree.delete(item)
+            args.append((category, i))
 
-        for i, category in enumerate(categories):
-            inputs = []
-
-            for mod in mod_list:
-                if mod["category"] == category:
-                    inputs.append(([mod["name"], API.get_mod_site(mod["name"], tools.get_minecraft_version(), tools.get_minecraft_loader())], tools.get_minecraft_version()))
-
-            mod_name_list = []
-            mod_name_and_version_list = []
-
-            if len(inputs) != 0:
-                for result in parallel_API.get_latest_mods_info_separated_parallel(inputs):
-                    mod_name_list.append(result[5][0])
-                    mod_name_and_version_list.append([result[5][0], result[2]])
-
-                mod_name_list_sorted = sorted(mod_name_list)
-
-                index = 3
-                for mod in mod_name_list_sorted:
-                    for mod_and_version in mod_name_and_version_list:
-                        if mod_and_version[0] == mod and mod_and_version[1] is not None:
-                            mods_tree.insert(parent=str(i), index="end", iid=len(mods_tree.get_tree_items()), text=mod_and_version[0],
-                                             values=mod_and_version[1])
-                            if mods_tree.tag_has("checked_focus", str(i)) or mods_tree.tag_has("checked", str(i)):
-                                mods_tree.change_state(mods_tree.get_children(str(i))[-1], "checked")
-                            index += 1
+        print()
+        print("\nUpdating mods infos:")
+        progressbar.config(maximum=len(args))
+        for index, result in enumerate(tqdm(ThreadPool(len(args)).imap_unordered(parallel_API.update_tree_parallel, args), total=len(args))):
+            progressbar.config(value=index + 1)
+        progressbar.config(value=0)
 
         commands.minecraft_version_combo["state"] = "readonly"
         commands.minecraft_loader_combo["state"] = "readonly"
@@ -214,7 +177,7 @@ class ModsList(ttk.LabelFrame):
         return ".".join(file_pieces)
 
     def update_tree(self, item_added=None):
-        directory = tools.get_mods_list_directory()
+        directory = tools.mods_list_directory
 
         if tools.check_directory(directory):
             selection_iids = mods_list_tree.get_checked()
@@ -277,9 +240,7 @@ class ModsList(ttk.LabelFrame):
         self.directory_entry.insert(0, f"{os.getcwd()}\\lists".replace('\\', '/'))
         tools.validation_directory(self, "mods_list_directory")
 
-        self.create_list_button = ttk.Button(self, text="Create a new mods list",
-                                             command=lambda: tools.save_list_directory(mods_tree, self,
-                                                                                       text=f"Save a list with {len(mods_tree.get_checked())} mods as"))
+        self.create_list_button = ttk.Button(self, text="Create a new mods list", command=lambda: tools.save_list_directory(mods_tree, self, text=f"Save a list with {len(mods_tree.get_checked())} mods as"))
         self.create_list_button.pack(padx=10, pady=(10, 0), fill="x")
 
 
@@ -300,7 +261,10 @@ class App(tk.Frame):
         super().__init__(root)
         # API.cleat_data()
 
+        global progressbar
+        progressbar = ttk.Progressbar()
         Commands(self).pack(fill="x")
+        progressbar.pack(fill="x")
         ModsList(self).pack(pady=(10, 0), side="right", fill="y")
         Mods(self).pack(padx=(0, 10), pady=(10, 0), expand=True, fill="both")
 
@@ -318,8 +282,8 @@ class App(tk.Frame):
     def change_theme(self):
         sv_ttk.toggle_theme()
         self.set_title_bar()
-        get_mods_list_tree().update_theme()
-        get_mods_tree().update_theme()
+        mods_list_tree.update_theme()
+        mods_tree.update_theme()
 
     def set_title_bar(self):
         if sv_ttk.get_theme() == "dark":

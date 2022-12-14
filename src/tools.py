@@ -19,28 +19,15 @@ mods_directory = ""
 mods_list_directory = ""
 minecraft_version = ""
 minecraft_loader = ""
-
-
-def get_mods_directory():
-    return mods_directory
-
-
-def get_mods_list_directory():
-    return mods_list_directory
-
-
-def get_minecraft_version():
-    return minecraft_version
-
-
-def get_minecraft_loader():
-    return minecraft_loader
+mods_list_length = ""
+categories_length = ""
 
 
 def check_directory(directory):
     if not directory == "":
         if os.path.isdir(directory):
             return True
+        print()
         print("the directory does not exist")
     return False
 
@@ -49,6 +36,7 @@ def check_mods_in_directory(_directory):
     for file in os.listdir(_directory):
         if file.split(".")[-1] == "jar":
             return True
+    print()
     print("no mods in this directory")
     return False
 
@@ -71,30 +59,30 @@ def validation_directory(self, directory):
 def find_directory(self):
     global mods_directory
     if str(self.directory_entry.winfo_parent()) == ".!app.!commands":
-        mods_directory = filedialog.askdirectory(initialdir=mods_directory)
+        mods_directory_ = filedialog.askdirectory(initialdir=mods_directory)
     else:
-        mods_directory = filedialog.askdirectory(initialdir=mods_list_directory)
-    if not mods_directory == "":
+        mods_directory_ = filedialog.askdirectory(initialdir=mods_list_directory)
+    if not mods_directory_ == "":
+        mods_directory = mods_directory_
         self.directory_entry.delete(0, tk.END)
         self.directory_entry.insert(0, mods_directory)
         self.directory_entry.validate()
 
 
 def save_list_directory(mods_tree, modslist, text=None):
-    selection = gui_elements.get_mods_list_tree().get_mods_selection()
+    selection = gui_elements.mods_list_tree.get_mods_selection()
 
-    file = tk.filedialog.asksaveasfile(initialfile='Untitled.json', filetypes=[('Json Document', '*.json')],
-                                       defaultextension=".json", title=text, initialdir=mods_list_directory)
+    file = tk.filedialog.asksaveasfile(initialfile='Untitled.json', filetypes=[('Json Document', '*.json')], defaultextension=".json", title=text, initialdir=mods_list_directory)
     if file is None:
         mods_tree.uncheck_selection_name(selection)
         modslist.update_tree()
         return
 
-    Mods_Tree = mods_tree.get_checked()
+    mods_tree_ = mods_tree.get_checked()
 
     file.write("[\n")
-    for index, iid in enumerate(Mods_Tree):
-        if index + 1 == len(Mods_Tree):
+    for index, iid in enumerate(mods_tree_):
+        if index + 1 == len(mods_tree_):
             file.write(f'  "{mods_tree.item(iid, "text")}"\n')
         else:
             file.write(f'  "{mods_tree.item(iid, "text")}",\n')
@@ -102,7 +90,7 @@ def save_list_directory(mods_tree, modslist, text=None):
     file.close()
 
     print()
-    print(f"Saved a list with {len(Mods_Tree)} mods in it")
+    print(f"Saved a list with {len(mods_tree_)} mods in it")
 
     modslist.update_tree(file.name.split("/")[-1])
 
@@ -140,8 +128,7 @@ def delete_mods(self):
     if not check_directory(mods_directory):
         messagebox.showerror("Unknown directory", "The selected directory does not exist")
     else:
-        answer = messagebox.askyesnocancel("Delete mods",
-                                           "Do you want to delete all the mods in this directory instead of the ones selected ?")
+        answer = messagebox.askyesnocancel("Delete mods", "Do you want to delete all the mods in this directory instead of the ones selected ?")
         if answer:
             modsSelector.delete_mods(mods_directory)
         elif answer is not None:
@@ -149,7 +136,7 @@ def delete_mods(self):
                 messagebox.showerror("Empty directory", "The selected directory has no mods in it")
             else:
                 mods = []
-                for mod in gui_elements.get_mods_tree().get_checked_name():
+                for mod in gui_elements.mods_tree.get_checked_name():
                     mods.append([mod, ""])
                 modsSelector.delete_mods(mods_directory, mods)
         else:
@@ -171,7 +158,7 @@ def update_mods(self):
 
 def download_mods(self):
     self.download_button["state"] = "disabled"
-    selected_mods = gui_elements.get_mods_tree().get_checked_name()
+    selected_mods = gui_elements.mods_tree.get_checked_name()
     if not check_directory(mods_directory):
         messagebox.showerror("Unknown directory", "The selected directory does not exist")
     elif not selected_mods:
@@ -180,7 +167,7 @@ def download_mods(self):
         answer = messagebox.askyesnocancel("Download dependencies", "Do you want to download the dependencies ?")
         selected_mods_and_site = []
         for mod in selected_mods:
-            selected_mods_and_site.append([mod, API.get_mod_site(mod, get_minecraft_version(), get_minecraft_loader())])
+            selected_mods_and_site.append([mod, API.get_mod_site(mod, minecraft_version, minecraft_loader)])
         if answer:
             modsSelector.download_mods_and_dependencies(selected_mods_and_site, minecraft_version, mods_directory)
         elif answer is not None:

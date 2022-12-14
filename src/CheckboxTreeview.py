@@ -17,7 +17,6 @@ from PIL import Image, ImageTk
 
 import gui_elements
 import tools
-import API
 
 IM_CHECKED_LIGHT_FOCUS = os.path.join("assets/light/check-focus.png")
 IM_CHECKED_LIGHT_PRESSED = os.path.join("assets/light/check-pressed.png")
@@ -100,7 +99,6 @@ class CheckboxTreeview(ttk.Treeview):
             _children = self.get_children(item)
             for _c in _children:
                 aux(_c)
-            self.uncheck_all()
 
         children = self.get_children("")
         for c in children:
@@ -213,7 +211,7 @@ class CheckboxTreeview(ttk.Treeview):
 
         def get_children(_item):
             _ch = self.get_children(_item)
-            if not _ch and int(_item) >= len(API.get_list("config/categories.json")):
+            if not _ch and int(_item) >= tools.categories_length:
                 checked.append(_item)
             else:
                 for _c in _ch:
@@ -231,8 +229,7 @@ class CheckboxTreeview(ttk.Treeview):
         def get_checked_children(_item):
             if not self.tag_has("unchecked", _item):
                 _ch = self.get_children(_item)
-                if not _ch and (self.tag_has("checked", _item) or self.tag_has("checked_focus", _item) or
-                                self.tag_has("checked_pressed", _item)) and int(_item) >= len(API.get_list("config/categories.json")):
+                if not _ch and (self.tag_has("checked", _item) or self.tag_has("checked_focus", _item) or self.tag_has("checked_pressed", _item)) and int(_item) >= tools.categories_length:
                     checked.append(_item)
                 else:
                     for _c in _ch:
@@ -250,7 +247,7 @@ class CheckboxTreeview(ttk.Treeview):
         def get_checked_name_children(item):
             if not self.tag_has("unchecked", item):
                 _ch = self.get_children(item)
-                if not _ch and (self.tag_has("checked", item) or self.tag_has("checked_focus", item)) and int(item) >= len(API.get_list("config/categories.json")):
+                if not _ch and (self.tag_has("checked", item) or self.tag_has("checked_focus", item)) and int(item) >= tools.categories_length:
                     checked_name.append(self.item(item, "text"))
                 else:
                     for _c in _ch:
@@ -439,7 +436,7 @@ class CheckboxTreeview(ttk.Treeview):
 
     def check_uncheck_all_tree(self):
         selection = self.selection()
-        if len(self.get_checked()) == len(self.get_tree_items()) - len(API.get_list("config/categories.json")):
+        if len(self.get_checked()) == len(self.get_tree_items()) - tools.categories_length:
             for iid in self.get_tree_items():
                 self._uncheck_ancestor(iid)
                 self._uncheck_descendant(iid)
@@ -495,7 +492,7 @@ class CheckboxTreeview(ttk.Treeview):
                 else:
                     self._uncheck_descendant(item)
                     self._uncheck_ancestor(item)
-                if gui_elements.get_mods_list_tree() is not None and gui_elements.get_mods_list_tree() is self:
+                if gui_elements.mods_list_tree is not None and gui_elements.mods_list_tree is self:
                     if not (self.tag_has("checked", item) or self.tag_has("checked_focus", item)):
                         self.uncheck_mods_tree(item)
                     self.check_mods_tree()
@@ -509,7 +506,7 @@ class CheckboxTreeview(ttk.Treeview):
         return selection
 
     def get_mods_selection(self, item=None):
-        directory = tools.get_mods_list_directory()
+        directory = tools.mods_list_directory
         if not tools.check_directory(directory):
             return
 
@@ -524,11 +521,11 @@ class CheckboxTreeview(ttk.Treeview):
 
     def uncheck_mods_tree(self, item):
         selection = self.get_mods_selection(item)
-        gui_elements.get_mods_tree().uncheck_selection_name(selection)
+        gui_elements.mods_tree.uncheck_selection_name(selection)
 
     def check_mods_tree(self):
         selection = self.get_mods_selection()
-        gui_elements.get_mods_tree().check_selection_name(selection)
+        gui_elements.mods_tree.check_selection_name(selection)
 
     def check_uncheck_tree(self):
         self.uncheck_mods_tree(None)

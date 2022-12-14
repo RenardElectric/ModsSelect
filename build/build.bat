@@ -4,5 +4,5 @@ pyinstaller ..\src\main.py --noconfirm --onefile --console --name "ModsSelect" -
 move dist\ModsSelect.exe ..\build
 
 del ModsSelect.spec
-rmdir /s /q build
-rmdir /s /q dist
+rmdir build
+rmdir dist

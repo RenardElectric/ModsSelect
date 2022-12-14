@@ -12,6 +12,8 @@ import ntkutils
 import sv_ttk
 
 import gui_elements
+import tools
+import API
 
 
 def main_gui():
@@ -46,5 +48,7 @@ def main_gui():
 root = tk.Tk()
 
 if __name__ == "__main__":
+    tools.mods_list_length = len(API.get_list("config/mods.json"))
+    tools.categories_length = len(API.get_list("config/categories.json"))
     main_gui()
     root.mainloop()
