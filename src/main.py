@@ -17,7 +17,7 @@ import API
 
 
 def main_gui():
-    root.title(" Pythonista Planet Desktop App ")
+    root.title(" ModsSelect ")
     # root.resizable(False, False)
     # root.geometry("500x500")
     # root.attributes('-topmost', True)
