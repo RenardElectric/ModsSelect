@@ -1,6 +1,6 @@
 sv-ttk~=2.4
 pandas~=1.5.2
-darkdetect~=0.7.1
+darkdetect==0.8.0
 ntkutils~=2.2.4
 requests~=2.28.1
 keyboard~=0.13.5
