@@ -68,6 +68,8 @@ def update_tree_parallel(args):
     for mod in mod_list:
         if mod["category"] == category:
             inputs.append(([mod["name"], API.get_mod_site(mod["name"], tools.minecraft_version, tools.minecraft_loader)], tools.minecraft_version))
+        elif mod["category"] is None and category == "Other":
+            inputs.append(([mod["name"], API.get_mod_site(mod["name"], tools.minecraft_version, tools.minecraft_loader)], tools.minecraft_version))
 
     mod_name_list = []
     mod_name_and_version_list = []

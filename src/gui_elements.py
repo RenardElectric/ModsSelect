@@ -113,10 +113,10 @@ class Mods(ttk.LabelFrame):
         print(categories[0])
         args = []
         for i, category in enumerate(categories):
+            args.append((category, i))
             if mods_tree.get_children(str(i)) is not None:
                 for item in mods_tree.get_children(str(i)):
                     mods_tree.delete(item)
-            args.append((category, i))
 
         print()
         print("\nUpdating mods infos:")

@@ -60,8 +60,9 @@ if __name__ == "__main__":
 
     categories = []
     for mod in tools.mods_list:
-        if mod["category"] not in categories:
+        if mod["category"] not in categories and mod["category"] is not None:
             categories.append(mod["category"])
+    categories.append("Other")
     tools.categories = categories
     tools.categories_length = len(categories)
 
