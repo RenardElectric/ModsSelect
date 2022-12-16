@@ -9,7 +9,6 @@ import json
 import time
 import urllib.error
 import urllib.request
-import pandas as pd
 import threading
 
 import tools
@@ -37,31 +36,15 @@ def open_url(url, headers=None):
     return request
 
 
-def get_list(directory):
-    lock.acquire()
-    f = open(directory, "r")
-    content = f.read()
-    f.close()
-    lock.release()
-    return json.loads(content)
-
-
 def write_mod_info(mod_name, mod_info, site):
     lock.acquire()
     mod_id, minecraft_versions, version_name, version_url, dependencies, loaders = mod_info
-    f = open("config/mods.json", "r")
-    content = f.read()
-    f.close()
-    mods_list = json.loads(content)
-    mods_list[0]["id"] = 0
-    for mod in mods_list:
+
+    for mod in tools.mods_list:
         if mod["name"] == mod_name:
             mod["id"] = mod_id
             if mod["site"] is None:
                 mod["site"] = site
-    file = open('config/mods.json', "w")
-    file.write(pd.DataFrame(mods_list, columns=["name", "category", "id", "site"]).to_json(orient='records', indent=5))
-    file.close()
     lock.release()
 
 
@@ -85,7 +68,7 @@ def get_mod_info_curseforge(mod_name, minecraft_version, loader):
         ['Accept', 'application/json'],
         ['x-api-key', '$2a$10$6kjcBapbGzJ1VCgpjmPjpu.5bBndofdMdl.ovdoIgEifyovJYw7Ee']
     ]
-    mod_list = get_list("config/mods.json")
+    mod_list = tools.mods_list
     mod_id = None
     for mod in mod_list:
         if mod["name"] == mod_name:
@@ -187,7 +170,7 @@ def get_mod_name(mod_id, site):
 
 
 def get_mod_site(mod_name, minecraft_version, loader, get_id=False):
-    mod_list = get_list("config/mods.json")
+    mod_list = tools.mods_list
     for mod in mod_list:
         if mod["name"] == mod_name:
             site = mod["site"]

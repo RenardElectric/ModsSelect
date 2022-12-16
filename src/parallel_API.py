@@ -60,7 +60,7 @@ def download_parallel(args):
 
 def update_tree_parallel(args):
     category, parent = args[0], args[1]
-    mod_list = API.get_list("config/mods.json")
+    mod_list = tools.mods_list
 
     mods_tree = gui_elements.mods_tree
     inputs = []

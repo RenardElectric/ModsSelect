@@ -39,7 +39,6 @@ class Commands(ttk.LabelFrame):
 
         self.columnconfigure(0, weight=1)
 
-        self.minecraft_versions = API.get_list("config/minecraft_versions.json")
         self.parent = parent
 
         self.add_widgets()
@@ -67,7 +66,7 @@ class Commands(ttk.LabelFrame):
         self.mods_version_label = ttk.Label(self)
         self.mods_version_label.grid(row=0, column=3, padx=(0, 10))
 
-        self.minecraft_version_combo = ttk.Combobox(self.mods_version_label, state="disabled", values=self.minecraft_versions, width=5)
+        self.minecraft_version_combo = ttk.Combobox(self.mods_version_label, state="disabled", values=tools.minecraft_versions, width=5)
         self.minecraft_version_combo.pack()
         self.minecraft_version_combo.current(0)
         self.minecraft_version_combo.bind('<<ComboboxSelected>>', self.change_minecraft_version)
@@ -110,7 +109,8 @@ class Mods(ttk.LabelFrame):
         commands.minecraft_version_combo["state"] = "disabled"
         commands.minecraft_loader_combo["state"] = "disabled"
 
-        categories = API.get_list("config/categories.json")
+        categories = tools.categories
+        print(categories[0])
         args = []
         for i, category in enumerate(categories):
             if mods_tree.get_children(str(i)) is not None:
@@ -151,7 +151,7 @@ class Mods(ttk.LabelFrame):
         mods_tree.column("#0", anchor="w", width=300)
         mods_tree.column("mod_latest_version", anchor="w")
 
-        categories = API.get_list("config/categories.json")
+        categories = tools.categories
         for index, category in enumerate(categories):
             mods_tree.insert(parent="", index="end", iid=str(index), text=f"{category} (0/0)")
 
@@ -272,7 +272,7 @@ class App(tk.Frame):
 
         self.mods = ["Mods", len(mods_tree.get_checked()), len(mods_tree.get_children())]
         self.categories = []
-        categories = API.get_list("config/categories.json")
+        categories = tools.categories
         for index, category in enumerate(categories):
             self.categories.append(
                 [category, len(mods_tree.get_checked(str(index))), len(mods_tree.get_children(str(index)))])

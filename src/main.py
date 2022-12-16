@@ -10,10 +10,10 @@ import tkinter as tk
 import darkdetect
 import ntkutils
 import sv_ttk
+import json
 
 import gui_elements
 import tools
-import API
 
 
 def main_gui():
@@ -45,10 +45,33 @@ def main_gui():
 
     ntkutils.placeappincenter(root)
 
+
 root = tk.Tk()
 
 if __name__ == "__main__":
-    tools.mods_list_length = len(API.get_list("config/mods.json"))
-    tools.categories_length = len(API.get_list("config/categories.json"))
+    f = open("config/minecraft_versions.json", "r")
+    tools.minecraft_versions = json.loads(f.read())
+    f.close()
+
+    f = open("config/mods.json", "r")
+    tools.mods_list = json.loads(f.read())
+    f.close()
+    tools.mods_list_length = len(tools.mods_list)
+
+    categories = []
+    for mod in tools.mods_list:
+        if mod["category"] not in categories:
+            categories.append(mod["category"])
+    tools.categories = categories
+    tools.categories_length = len(categories)
+
     main_gui()
+
+    def on_closing():
+        json_object = json.dumps(tools.mods_list, indent=4)
+        with open("config/mods.json", "w") as outfile:
+            outfile.write(json_object)
+        root.destroy()
+
+    root.protocol("WM_DELETE_WINDOW", on_closing)
     root.mainloop()

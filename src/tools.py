@@ -19,6 +19,9 @@ mods_directory = ""
 mods_list_directory = ""
 minecraft_version = ""
 minecraft_loader = ""
+minecraft_versions = []
+mods_list =[]
+categories = []
 mods_list_length = ""
 categories_length = ""
 
