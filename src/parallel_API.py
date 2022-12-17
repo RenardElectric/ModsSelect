@@ -76,7 +76,7 @@ def update_tree_parallel(args):
     mod_name_and_version_list = []
 
     if len(inputs) != 0:
-        for index, result in enumerate(tqdm(ThreadPool(len(inputs)).imap_unordered(get_latest_mod_info_separated, inputs), total=len(inputs))):
+        for result in tqdm(ThreadPool(len(inputs)).imap_unordered(get_latest_mod_info_separated, inputs), total=len(inputs)):
             gui_elements.progressbar.config(value=gui_elements.progressbar["value"] + 1)
             mod_name_list.append(result[5][0])
             mod_name_and_version_list.append([result[5][0], result[2]])

@@ -15,9 +15,7 @@ import threading
 
 import ntkutils
 import sv_ttk
-from tqdm import tqdm
 
-import API
 import parallel_API
 import tools
 from CheckboxTreeview import CheckboxTreeview
