@@ -329,6 +329,14 @@ class CheckboxTreeview(ttk.Treeview):
                 items.append(child)
         return items
 
+    def get_tree_item_names(self):
+        items = []
+        for parent in self.get_children():
+            items.append(self.item(parent, "text"))
+            for child in self.get_children(parent):
+                items.append(self.item(child, "text"))
+        return items
+
     def get_items_order(self):
         items = []
 

@@ -7,6 +7,7 @@ Source: ModsSelect
 
 import json
 import time
+import urllib.parse
 import urllib.error
 import urllib.request
 import threading
@@ -16,9 +17,11 @@ import tools
 lock = threading.Lock()
 
 
-def open_url(url, headers=None):
+def open_url(url, headers=None, params=None):
     """ returns the request from the url, wats if the server asks, throws an error if the link does not exist """
     try:
+        if params is not None:
+            url += "?" + urllib.parse.urlencode(params)
         req = urllib.request.Request(url)
         if headers is not None:
             for header in headers:
@@ -53,8 +56,16 @@ def get_mod_id_from_name_curseforge(mod_name, minecraft_version, loader):
         ['Accept', 'application/json'],
         ['x-api-key', '$2a$10$6kjcBapbGzJ1VCgpjmPjpu.5bBndofdMdl.ovdoIgEifyovJYw7Ee']
     ]
-    url = f"https://api.curseforge.com/v1/mods/search?pageSize=1&gameVersion={minecraft_version}&modLoaderType={1 if loader == 'forge' else 4 if loader == 'fabric' else 5}&gameId=432&slug={mod_name}&sortOrder=desc"
-    request = open_url(url, headers)
+    params = {
+        "pageSize": 1,
+        "gameVersion": str(minecraft_version).replace("'", '"'),
+        "modLoaderType": 1 if loader == "forge" else 4 if loader == "fabric" else 5,
+        "gameId": 432,
+        "slug": str(mod_name).replace("'", '"'),
+        "sortOrder": "desc"
+    }
+    url = f"https://api.curseforge.com/v1/mods/search"
+    request = open_url(url, headers, params)
     if request is None:
         return
     mod = json.loads(request.read())["data"]
@@ -68,6 +79,11 @@ def get_mod_info_curseforge(mod_name, minecraft_version, loader):
         ['Accept', 'application/json'],
         ['x-api-key', '$2a$10$6kjcBapbGzJ1VCgpjmPjpu.5bBndofdMdl.ovdoIgEifyovJYw7Ee']
     ]
+    params = {
+        "pageSize": 1,
+        "gameVersion": str(minecraft_version).replace("'", '"'),
+        "modLoaderType": 1 if loader == 'forge' else 4 if loader == 'fabric' else 5
+    }
     mod_list = tools.mods_list
     mod_id = None
     for mod in mod_list:
@@ -77,8 +93,8 @@ def get_mod_info_curseforge(mod_name, minecraft_version, loader):
         mod_id = get_mod_id_from_name_curseforge(mod_name, minecraft_version, loader)
     if mod_id is None:
         return
-    url = f"https://api.curseforge.com/v1/mods/{mod_id}/files?pageSize=1&gameVersion={minecraft_version}&modLoaderType={1 if loader == 'forge' else 4 if loader == 'fabric' else 5}"
-    request = open_url(url, headers)
+    url = f"https://api.curseforge.com/v1/mods/{mod_id}/files"
+    request = open_url(url, headers, params)
     if request is None:
         return
     mod_versions = json.loads(request.read())["data"]
@@ -110,8 +126,13 @@ def get_mod_info_modrinth(mod_name, minecraft_version, loader):
         ['Accept', 'application/json'],
         ['User-Agent', 'RenardElectric/ModsSelect/2.0.0-beta2 (RenardElectric.perso@gmail.com)']
     ]
-    url = f"https://api.modrinth.com/v2/project/{mod_name}/version?game_versions=%5B%22{minecraft_version}%22%5D&loaders=%5B%22{loader}%22%5D"
-    request = open_url(url, headers)
+    params = {
+        "game_versions": str([minecraft_version]).replace("'", '"'),
+        "loaders": str([loader]).replace("'", '"')
+    }
+    mod_name_ = urllib.parse.quote(mod_name)
+    url = f"https://api.modrinth.com/v2/project/{mod_name_}/version"
+    request = open_url(url, headers, params)
     if request is None:
         return
     mod_versions = json.loads(request.read())
@@ -169,7 +190,7 @@ def get_mod_name(mod_id, site):
         return json.loads(request.read())["slug"]
 
 
-def get_mod_site(mod_name, minecraft_version, loader, get_id=False):
+def get_mod_site(mod_name, minecraft_version, loader):
     mod_list = tools.mods_list
     for mod in mod_list:
         if mod["name"] == mod_name:
@@ -177,15 +198,12 @@ def get_mod_site(mod_name, minecraft_version, loader, get_id=False):
             if site is not None:
                 return site
     try:
+        mod_name = urllib.parse.quote(mod_name)
         open_url(f"https://api.modrinth.com/v2/project/{mod_name}")
-        if get_id:
-            return "modrinth", mod_name
         return "modrinth"
     except urllib.error.HTTPError:
         try:
-            mod_id = get_mod_id_from_name_curseforge(mod_name, minecraft_version, loader)
-            if get_id:
-                return "curseforge", mod_id
+            get_mod_id_from_name_curseforge(mod_name, minecraft_version, loader)
             return "curseforge"
         except urllib.error.HTTPError:
             return

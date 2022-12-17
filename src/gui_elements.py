@@ -110,20 +110,28 @@ class Mods(ttk.LabelFrame):
         commands.minecraft_loader_combo["state"] = "disabled"
 
         categories = tools.categories
-        print(categories[0])
         args = []
+        mods = []
         for i, category in enumerate(categories):
             args.append((category, i))
             if mods_tree.get_children(str(i)) is not None:
                 for item in mods_tree.get_children(str(i)):
                     mods_tree.delete(item)
+                    mods.append(item)
 
         print()
         print("\nUpdating mods infos:")
-        progressbar.config(maximum=len(args))
-        for index, result in enumerate(tqdm(ThreadPool(len(args)).imap_unordered(parallel_API.update_tree_parallel, args), total=len(args))):
-            progressbar.config(value=index + 1)
+        progressbar.config(maximum=len(tools.mods_list))
+        for result in ThreadPool(len(args)).imap_unordered(parallel_API.update_tree_parallel, args):
+            nothing = None
         progressbar.config(value=0)
+
+        mods = []
+        for mod in tools.mods_list:
+            if mod["name"] not in mods_tree.get_tree_item_names():
+                mods.append(mod["name"])
+        print()
+        print(f"{len(mods)} mods are not available for minecraft {tools.minecraft_version} for the {tools.minecraft_loader} mod loader: {mods}")
 
         commands.minecraft_version_combo["state"] = "readonly"
         commands.minecraft_loader_combo["state"] = "readonly"
