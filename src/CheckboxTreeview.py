@@ -121,8 +121,7 @@ class CheckboxTreeview(ttk.Treeview):
                 self.unbind("<ButtonRelease-1>")
                 self.bind("<ButtonRelease-1>", self._box_click, True)
             return ttk.Treeview.state(self, statespec)
-        else:
-            return ttk.Treeview.state(self)
+        return ttk.Treeview.state(self)
 
     def change_state(self, item, state):
         """
@@ -262,6 +261,7 @@ class CheckboxTreeview(ttk.Treeview):
         for iid in self.get_children("0"):
             if self.item(iid, "text") == name:
                 return iid
+        return None
 
     def _check_descendant(self, item):
         """Check the boxes of item's descendants."""
@@ -354,6 +354,7 @@ class CheckboxTreeview(ttk.Treeview):
         for place, name in enumerate(items):
             if name == item:
                 return place
+        return None
 
     def _update_selection(self, initial_item):
         item = self.get_item_place(initial_item)
@@ -482,7 +483,7 @@ class CheckboxTreeview(ttk.Treeview):
             self.focus_selection([item])
             if keyboard.is_pressed("shift"):
                 self.focus_selection(self.current_selection)
-            elif elem == "image" or elem == "text":
+            elif elem in ["image", "text"]:
                 self._unpress_all()
                 self._press_item(item)
 
@@ -493,7 +494,7 @@ class CheckboxTreeview(ttk.Treeview):
         if len(self.get_items_order()) < self.item_selected + 1:
             return
         item = self.get_items_order()[self.item_selected]
-        if elem == "image" or elem == "text":
+        if elem in ["image", "text"]:
             if not keyboard.is_pressed("shift"):
                 if self.tag_has("unchecked_pressed", item) or self.tag_has("tristate_pressed", item):
                     self._check_ancestor(item)
@@ -509,15 +510,15 @@ class CheckboxTreeview(ttk.Treeview):
 
     def get_mods_selection_iid(self, iid, directory):
         selection = []
-        mods = json.loads(open(f'{directory}\\{self.item(iid, "text")}', "r").read())
-        for mod in mods:
-            selection.append(mod)
-        return selection
+        with json.loads(open(f'{directory}\\{self.item(iid, "text")}', "r", encoding="UTF-8").read()) as mods:
+            for mod in mods:
+                selection.append(mod)
+            return selection
 
     def get_mods_selection(self, item=None):
         directory = tools.mods_list_directory
         if not tools.check_directory(directory):
-            return
+            return None
 
         if item is not None:
             return self.get_mods_selection_iid(item, directory)

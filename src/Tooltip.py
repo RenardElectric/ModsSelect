@@ -3,12 +3,12 @@ Author: RedFantom and RenardElectric
 License: GNU GPLv3
 Source: ttkwidgets and ModsSelect
 """
+import os
 import tkinter as tk
 from tkinter import ttk
 
 import sv_ttk
 from PIL import Image, ImageTk
-import os
 from ttkwidgets.utilities import get_assets_directory
 
 
@@ -134,9 +134,7 @@ class Tooltip(ttk.Frame):
             x, y = self.master.winfo_pointerxy()
         self._canvas.update()
         # Update the Geometry of the Toplevel to update its position and size
-        self._toplevel.geometry("{0}x{1}+{2}+{3}".format(
-            self._canvas.winfo_width(), self._canvas.winfo_height(),
-            x + self.__offset[0], y + self.__offset[1]))
+        self._toplevel.geometry(f"{self._canvas.winfo_width()}x{self._canvas.winfo_height()}+{x + self.__offset[0]}+{y + self.__offset[1]}")
 
     def cget(self, key):
         """
@@ -165,8 +163,7 @@ class Tooltip(ttk.Frame):
             return self.__showheader
         elif key == "static":
             return self.__static
-        else:
-            return ttk.Frame.cget(self, key)
+        return ttk.Frame.cget(self, key)
 
     def config(self, **kwargs):
         """

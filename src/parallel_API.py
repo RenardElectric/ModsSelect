@@ -42,6 +42,7 @@ def returns_mods_update_list(args):
     latest_mod_version_name = API.get_latest_mod_version_name([mod_components[0], API.get_mod_site(mod_components[0], tools.minecraft_version, tools.minecraft_loader)], minecraft_version)
     if not mod_components[2].replace(".jar", "", 1) == latest_mod_version_name and latest_mod_version_name is not None:
         return mod_components[0], minecraft_version
+    return None
 
 
 def download_parallel(args):
@@ -56,7 +57,7 @@ def download_parallel(args):
         return
     download_dir = Path(directory)
     download_dir.mkdir(parents=True, exist_ok=True)
-    response = requests.get(url, stream=True)
+    response = requests.get(url, stream=True, timeout=10)
     download_dir.joinpath(fn).write_bytes(response.content)
 
 
@@ -88,3 +89,4 @@ def update_tree_parallel(args):
                 if mod_and_version[0] == mod and mod_and_version[1] is not None:
                     mod_name_and_version_list_sorted.append((mod_and_version[0], mod_and_version[1], parent))
         return mod_name_and_version_list_sorted
+    return None

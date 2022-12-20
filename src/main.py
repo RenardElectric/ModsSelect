@@ -5,12 +5,12 @@ License: GNU GPLv3
 Source: ModsSelect
 """
 
+import json
 import tkinter as tk
 
 import darkdetect
 import ntkutils
 import sv_ttk
-import json
 
 import gui_elements
 import tools
@@ -49,13 +49,11 @@ def main_gui():
 root = tk.Tk()
 
 if __name__ == "__main__":
-    f = open("config/minecraft_versions.json", "r")
-    tools.minecraft_versions = json.loads(f.read())
-    f.close()
+    with open("config/minecraft_versions.json", "r", encoding="UTF-8") as file:
+        tools.minecraft_versions = json.loads(file.read())
 
-    f = open("config/mods.json", "r")
-    tools.mods_list = json.loads(f.read())
-    f.close()
+    with open("config/mods.json", "r") as file:
+        tools.mods_list = json.loads(file.read())
     tools.mods_list_length = len(tools.mods_list)
 
     categories = []

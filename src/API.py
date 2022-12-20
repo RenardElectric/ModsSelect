@@ -41,7 +41,6 @@ def open_url(url, headers=None, params=None):
 
 def write_mod_info(mod_name, mod_info, site):
     lock.acquire()
-
     for mod in tools.mods_list:
         if mod["name"] == mod_name:
             mod["id"] = mod_info[0]
@@ -153,6 +152,7 @@ def get_latest_mod_info(mod_and_site, minecraft_version, loader):
         return get_mod_info_curseforge(mod_and_site[0], minecraft_version, loader)
     elif mod_and_site[1] == "modrinth":
         return get_mod_info_modrinth(mod_and_site[0], minecraft_version, loader)
+    return None
 
 
 def get_latest_mod_version_name(mod_and_site, minecraft_version):
@@ -187,6 +187,7 @@ def get_mod_name(mod_id, site):
     elif site == "modrinth":
         request = open_url(f"https://api.modrinth.com/v2/project/{mod_id}")
         return json.loads(request.read())["slug"]
+    return None
 
 
 def get_mod_site(mod_name, minecraft_version, loader):

@@ -8,7 +8,6 @@ Source: ModsSelect
 import ctypes
 import os
 import threading
-import tkinter
 import tkinter as tk
 from multiprocessing.pool import ThreadPool
 from tkinter import ttk
@@ -103,7 +102,7 @@ class Commands(ttk.LabelFrame):
         self.update_button.grid(row=0, column=5, padx=10, pady=(10, 0))
         Tooltip(self.update_button, text="Update the mods in the selected directory to the minecraft version you chose")
 
-        self.switch = ttk.Checkbutton(self, text="Dark theme", style="Switch.TCheckbutton", variable=tkinter.BooleanVar(self, sv_ttk.get_theme() == "dark"), command=self.parent.change_theme)
+        self.switch = ttk.Checkbutton(self, text="Dark theme", style="Switch.TCheckbutton", variable=tk.BooleanVar(self, sv_ttk.get_theme() == "dark"), command=self.parent.change_theme)
         self.switch.grid(row=0, column=6, columnspan=2, pady=10)
         Tooltip(self.switch, text="Switch from light to dark theme")
 
@@ -186,7 +185,7 @@ class Mods(ttk.LabelFrame):
 
         mods_tree.pack(side="left", expand=True, fill="both")
 
-        mods_tree.heading('#0', text='Mods (0/0)', command=lambda: mods_tree.check_uncheck_all_tree())
+        mods_tree.heading('#0', text='Mods (0/0)', command=mods_tree.check_uncheck_all_tree)
         mods_tree.heading('mod_latest_version', text='Mods Version')
 
         mods_tree.column("#0", anchor="w", width=300)
