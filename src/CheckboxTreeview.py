@@ -490,10 +490,11 @@ class CheckboxTreeview(ttk.Treeview):
         """Check or uncheck box when clicked."""
         x, y, widget = event.x, event.y, event.widget
         elem = widget.identify("element", x, y)
+        if len(self.get_items_order()) < self.item_selected + 1:
+            return
         item = self.get_items_order()[self.item_selected]
         if elem == "image" or elem == "text":
             if not keyboard.is_pressed("shift"):
-
                 if self.tag_has("unchecked_pressed", item) or self.tag_has("tristate_pressed", item):
                     self._check_ancestor(item)
                     self._check_descendant(item)

@@ -21,8 +21,9 @@ lock = threading.Lock()
 
 
 def get_latest_mod_info_separated(args):
-    mod_and_site, minecraft_version = args[0], args[1]
-    latest_mod_info = API.get_latest_mod_info(mod_and_site, minecraft_version, tools.minecraft_loader)
+    mod = args[0]
+    mod_and_site = [mod["name"], API.get_mod_site(mod["name"], tools.minecraft_version, tools.minecraft_loader)]
+    latest_mod_info = API.get_latest_mod_info(mod_and_site, tools.minecraft_version, tools.minecraft_loader)
     if not latest_mod_info:
         return None, None, None, None, None, mod_and_site
     return latest_mod_info[0], latest_mod_info[1], latest_mod_info[2], latest_mod_info[3], latest_mod_info[4], mod_and_site
@@ -63,19 +64,17 @@ def update_tree_parallel(args):
     category, parent = args[0], args[1]
     mod_list = tools.mods_list
 
-    mods_tree = gui_elements.mods_tree
     inputs = []
 
     for mod in mod_list:
         if mod["category"] == category:
-            inputs.append(([mod["name"], API.get_mod_site(mod["name"], tools.minecraft_version, tools.minecraft_loader)], tools.minecraft_version))
+            inputs.append((mod, category))
         elif mod["category"] is None and category == "Other":
-            inputs.append(([mod["name"], API.get_mod_site(mod["name"], tools.minecraft_version, tools.minecraft_loader)], tools.minecraft_version))
-
-    mod_name_list = []
-    mod_name_and_version_list = []
+            inputs.append(mod)
 
     if len(inputs) != 0:
+        mod_name_list = []
+        mod_name_and_version_list = []
         for result in tqdm(ThreadPool(len(inputs)).imap_unordered(get_latest_mod_info_separated, inputs), total=len(inputs)):
             gui_elements.progressbar.config(value=gui_elements.progressbar["value"] + 1)
             mod_name_list.append(result[5][0])
@@ -83,11 +82,9 @@ def update_tree_parallel(args):
 
         mod_name_list_sorted = sorted(mod_name_list)
 
-        lock.acquire()
+        mod_name_and_version_list_sorted = []
         for mod in mod_name_list_sorted:
             for mod_and_version in mod_name_and_version_list:
                 if mod_and_version[0] == mod and mod_and_version[1] is not None:
-                    mods_tree.insert(parent=str(parent), index="end", iid=len(mods_tree.get_tree_items()), text=mod_and_version[0], values=mod_and_version[1])
-                    if mods_tree.tag_has("checked_focus", str(parent)) or mods_tree.tag_has("checked", str(parent)):
-                        mods_tree.change_state(mods_tree.get_children(str(parent))[-1], "checked")
-        lock.release()
+                    mod_name_and_version_list_sorted.append((mod_and_version[0], mod_and_version[1], parent))
+        return mod_name_and_version_list_sorted

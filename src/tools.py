@@ -20,7 +20,7 @@ mods_list_directory = ""
 minecraft_version = ""
 minecraft_loader = ""
 minecraft_versions = []
-mods_list =[]
+mods_list = []
 categories = []
 mods_list_length = ""
 categories_length = ""
@@ -99,31 +99,19 @@ def save_list_directory(mods_tree, modslist, text=None):
 
 
 def update_minecraft_version(commands, mods_class):
-    commands.minecraft_version_combo["state"] = "disabled"
-    commands.minecraft_loader_combo["state"] = "disabled"
-
     global minecraft_version
     if not minecraft_version == commands.minecraft_version_combo.get():
         minecraft_version = commands.minecraft_version_combo.get()
         if mods_class is not None:
             threading.Thread(target=mods_class.update_tree, daemon=True).start()
 
-    commands.minecraft_version_combo["state"] = "readonly"
-    commands.minecraft_loader_combo["state"] = "readonly"
-
 
 def update_minecraft_loader(commands, mods_class):
-    commands.minecraft_version_combo["state"] = "disabled"
-    commands.minecraft_loader_combo["state"] = "disabled"
-
     global minecraft_loader
     if not minecraft_loader == commands.minecraft_loader_combo.get():
         minecraft_loader = commands.minecraft_loader_combo.get()
         if mods_class is not None:
             threading.Thread(target=mods_class.update_tree, daemon=True).start()
-
-    commands.minecraft_version_combo["state"] = "readonly"
-    commands.minecraft_loader_combo["state"] = "readonly"
 
 
 def delete_mods(self):
@@ -131,10 +119,8 @@ def delete_mods(self):
     if not check_directory(mods_directory):
         messagebox.showerror("Unknown directory", "The selected directory does not exist")
     else:
-        answer = messagebox.askyesnocancel("Delete mods", "Do you want to delete all the mods in this directory instead of the ones selected ?")
+        answer = messagebox.askyesnocancel("Delete mods", "Delete only the mods you selected instead of all of them ?")
         if answer:
-            modsSelector.delete_mods(mods_directory)
-        elif answer is not None:
             if not check_mods_in_directory(mods_directory):
                 messagebox.showerror("Empty directory", "The selected directory has no mods in it")
             else:
@@ -142,6 +128,8 @@ def delete_mods(self):
                 for mod in gui_elements.mods_tree.get_checked_name():
                     mods.append([mod, ""])
                 modsSelector.delete_mods(mods_directory, mods)
+        elif answer is not None:
+            modsSelector.delete_mods(mods_directory)
         else:
             print()
             print("deletion canceled")

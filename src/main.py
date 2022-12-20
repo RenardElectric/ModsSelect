@@ -18,8 +18,8 @@ import tools
 
 def main_gui():
     root.title(" ModsSelect ")
+    root.geometry("875x825")
     # root.resizable(False, False)
-    # root.geometry("500x500")
     # root.attributes('-topmost', True)
 
     if darkdetect.theme() == "Dark":

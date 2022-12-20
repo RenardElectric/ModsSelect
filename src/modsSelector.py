@@ -63,7 +63,7 @@ def get_mods_update_list(directory, minecraft_version):
             mod_names.append(file.split("~")[0])
             inputs.append((file, minecraft_version))
 
-    if not len(inputs) == 0:
+    if len(inputs) != 0:
         gui_elements.progressbar.config(maximum=len(inputs))
         for index, result in enumerate(tqdm(ThreadPool(len(inputs)).imap_unordered(parallel_API.returns_mods_update_list, inputs), total=len(inputs))):
             gui_elements.progressbar.config(value=index + 1)
@@ -76,10 +76,9 @@ def get_mods_update_list(directory, minecraft_version):
         print(f"Time to get the list of mods to update: {time.time() - t0}s")
 
         return mods_update_list
-    else:
-        print()
-        print("No mods found")
-        return mods_update_list
+    print()
+    print("No mods found")
+    return mods_update_list
 
 
 def delete_mods(directory, mod_and_loader_list=None):
@@ -100,16 +99,16 @@ def download_mods(mods_update_list, minecraft_version, directory):
     t0 = time.time()
     inputs = []
 
-    for index in range(len(mods_update_list)):
-        inputs.append((mods_update_list[index], minecraft_version, directory))
+    for index in enumerate(mods_update_list):
+        inputs.append((mods_update_list[index[0]], minecraft_version, directory))
 
     print()
     print()
     print("Time to download the mods:")
 
     gui_elements.progressbar.config(maximum=len(inputs))
-    for index, result in enumerate(tqdm(ThreadPool(len(inputs)).imap_unordered(parallel_API.download_parallel, inputs), total=len(inputs))):
-        gui_elements.progressbar.config(value=index + 1)
+    for index in enumerate(tqdm(ThreadPool(len(inputs)).imap_unordered(parallel_API.download_parallel, inputs), total=len(inputs))):
+        gui_elements.progressbar.config(value=index[0] + 1)
     gui_elements.progressbar.config(value=0)
 
     print()
@@ -121,7 +120,7 @@ def update_mods(directory, minecraft_version):
     t0 = time.time()
     update_mod_name_and_platform = []
     mod_update_list = get_mods_update_list(directory, minecraft_version)
-    if not len(mod_update_list) == 0:
+    if len(mod_update_list) != 0:
         for mods in mod_update_list:
             update_mod_name_and_platform.append([mods[0], API.get_mod_site(mods[0], tools.minecraft_version, tools.minecraft_loader)])
         delete_mods(directory, update_mod_name_and_platform)

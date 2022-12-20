@@ -31,7 +31,7 @@ def open_url(url, headers=None, params=None):
         if e.code == 429:
             print(f'    sleeping for: {e.headers.get("X-Ratelimit-Reset")}s')
             time.sleep(int(e.headers.get("X-Ratelimit-Reset")) + 1)
-            print(f'    waking up')
+            print('    waking up')
             request = urllib.request.urlopen(url)
         else:
             # print("error")
@@ -41,11 +41,10 @@ def open_url(url, headers=None, params=None):
 
 def write_mod_info(mod_name, mod_info, site):
     lock.acquire()
-    mod_id, minecraft_versions, version_name, version_url, dependencies, loaders = mod_info
 
     for mod in tools.mods_list:
         if mod["name"] == mod_name:
-            mod["id"] = mod_id
+            mod["id"] = mod_info[0]
             if mod["site"] is None:
                 mod["site"] = site
     lock.release()
@@ -64,13 +63,13 @@ def get_mod_id_from_name_curseforge(mod_name, minecraft_version, loader):
         "slug": str(mod_name).replace("'", '"'),
         "sortOrder": "desc"
     }
-    url = f"https://api.curseforge.com/v1/mods/search"
+    url = "https://api.curseforge.com/v1/mods/search"
     request = open_url(url, headers, params)
     if request is None:
-        return
+        return None
     mod = json.loads(request.read())["data"]
     if len(mod) == 0:
-        return
+        return None
     return mod[0]["id"]
 
 
@@ -92,14 +91,14 @@ def get_mod_info_curseforge(mod_name, minecraft_version, loader):
     if mod_id is None:
         mod_id = get_mod_id_from_name_curseforge(mod_name, minecraft_version, loader)
     if mod_id is None:
-        return
+        return None
     url = f"https://api.curseforge.com/v1/mods/{mod_id}/files"
     request = open_url(url, headers, params)
     if request is None:
-        return
+        return None
     mod_versions = json.loads(request.read())["data"]
     if len(mod_versions) == 0:
-        return []
+        return None
     mod_version = mod_versions[0]
     game_versions = []
     loaders = []
@@ -134,10 +133,10 @@ def get_mod_info_modrinth(mod_name, minecraft_version, loader):
     url = f"https://api.modrinth.com/v2/project/{mod_name_}/version"
     request = open_url(url, headers, params)
     if request is None:
-        return
+        return None
     mod_versions = json.loads(request.read())
     if len(mod_versions) == 0:
-        return []
+        return None
     mod_version = mod_versions[0]
     dependencies = []
     for dependency in mod_version["dependencies"]:
@@ -206,11 +205,10 @@ def get_mod_site(mod_name, minecraft_version, loader):
             get_mod_id_from_name_curseforge(mod_name, minecraft_version, loader)
             return "curseforge"
         except urllib.error.HTTPError:
-            return
+            return None
 
 
 def returns_download_mod_url(mod_and_site, minecraft_version):
     """ returns the url to download the mod and the mod's file name """
-    mod_version_id, minecraft_versions, mod_version_name, mod_version_url, mod_dependencies, loaders = \
-        get_latest_mod_info(mod_and_site, minecraft_version, tools.minecraft_loader)
+    mod_version_id, minecraft_versions, mod_version_name, mod_version_url, mod_dependencies, loaders = get_latest_mod_info(mod_and_site, minecraft_version, tools.minecraft_loader)
     return mod_version_url, f"{mod_and_site[0]}~{minecraft_version}~{mod_version_name}.jar"

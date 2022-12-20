@@ -86,7 +86,7 @@ to discuss what you would like to change.
 
 
 ## Authors and acknowledgment
-ttkwidgets for the CheckboxTreeview that I modified
+ttkwidgets for the CheckboxTreeview and the Tooltip that I modified
 
 sv_ttk for the sun valley theme
 
