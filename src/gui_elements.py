@@ -70,10 +70,8 @@ class Commands(ttk.LabelFrame):
         self.directory_button.grid(row=0, column=1, pady=(10, 0))
         Tooltip(self.directory_button, text="Choose the directory where you want to manage your mods")
 
-
         self.mods_version_and_env_label = ttk.Label(self)
         self.mods_version_and_env_label.grid(row=0, column=3, padx=10)
-
 
         self.mods_version_label = ttk.Label(self.mods_version_and_env_label)
         self.mods_version_label.grid(row=0)
@@ -90,7 +88,6 @@ class Commands(ttk.LabelFrame):
         self.minecraft_loader_combo.bind('<<ComboboxSelected>>', self.change_minecraft_loader)
         Tooltip(self.minecraft_loader_combo, text="Choose the minecraft mod loader in which you want your mods to be on")
 
-
         self.mods_management_label = ttk.Label(self)
         self.mods_management_label.grid(row=0, column=4)
 
@@ -101,8 +98,6 @@ class Commands(ttk.LabelFrame):
         self.delete_button = ttk.Button(self.mods_management_label, text="Delete Mods", command=lambda: tools.delete_mods(self))
         self.delete_button.pack(pady=(10, 0), fill="x")
         Tooltip(self.delete_button, text="Delete the mods you selected")
-
-
 
         self.update_button = ttk.Button(self, text="Update Mods", command=lambda: threading.Thread(target=tools.update_mods, args=(self,), daemon=True).start())
         self.update_button.grid(row=0, column=5, padx=10, pady=(10, 0))
