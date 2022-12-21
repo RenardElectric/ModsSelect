@@ -255,26 +255,26 @@ class ModsList(ttk.LabelFrame):
         global mods_list_tree
 
         self.directory_label = ttk.Label(self)
-        self.directory_label.pack(fill="x")
+        self.directory_label.pack(fill="x", padx=10, pady=(10, 0))
 
         self.directory_button = ttk.Button(self.directory_label, text="...", command=lambda: tools.find_directory(self))
-        self.directory_button.pack(padx=10, pady=(10, 0), fill="x", side="right")
+        self.directory_button.pack(side="right")
         Tooltip(self.directory_button, text="Write the directory where you want to manage your lists of mods")
 
         self.directory_entry = ttk.Entry(self.directory_label, validatecommand=self.validation_mods_list_directory)
-        self.directory_entry.pack(padx=10, pady=(10, 0), fill="x")
+        self.directory_entry.pack(padx=(0, 10), fill="both", expand=True)
         self.directory_entry.bind('<Return>', self.validation_mods_list_directory_on_return)
         Tooltip(self.directory_entry, text="Choose the directory where you want to manage your lists of mods")
 
         self.list_label = ttk.Label(self)
-        self.list_label.pack(padx=10, pady=(10, 0), expand=True, fill="y")
+        self.list_label.pack(padx=10, pady=(10, 0), expand=True, fill="both")
 
         self.mods_list_scrollbar = ttkwidgets.AutoHideScrollbar(self.list_label)
         self.mods_list_scrollbar.pack(side="right", fill="y")
 
         mods_list_tree = CheckboxTreeview(self.list_label, height=21, show="tree",
                                           yscrollcommand=self.mods_list_scrollbar.set)
-        mods_list_tree.pack(side="left", expand=True, fill="y")
+        mods_list_tree.pack(side="left", expand=True, fill="both")
 
         self.mods_list_scrollbar.config(command=mods_list_tree.yview)
         self.list = mods_list_tree
