@@ -46,7 +46,7 @@ With this app you can:
 ### Modifying config files
 - You can change the config files to add other minecraft versions or add other mods
 
-    > **Warning**
+    > **Warning**  
     > As of now, when you update the app, the config files are reset. Be sure to save them before updating if you changed them
 
     ### Adding another minecraft version to the app
