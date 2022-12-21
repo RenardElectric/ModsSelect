@@ -36,7 +36,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "..\*"; DestDir: "{app}"; Excludes: "requirements.txt, README.md, ModsSelect.png, LICENSE.md, run with log.cmd, .idea, __pycache__, other, src, build, venv"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\*"; DestDir: "{app}"; Excludes: "requirements.txt, README.md, ModsSelect.png, LICENSE.md, .idea, __pycache__, other, src, build, venv"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "ModsSelect.exe"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
