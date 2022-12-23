@@ -12,6 +12,7 @@ import tkinter as tk
 from multiprocessing.pool import ThreadPool
 from tkinter import ttk
 import ttkwidgets
+from tqdm.auto import tqdm
 from Tooltip import Tooltip
 
 import ntkutils
@@ -147,7 +148,7 @@ class Mods(ttk.LabelFrame):
         progressbar.config(value=0)
 
         progressbar.config(maximum=len(mod_list_sorted))
-        for mod in mod_list_sorted:
+        for mod in tqdm(mod_list_sorted, desc="Mod tree", unit="mods"):
             mods_tree.insert(parent=mod[2], index="end", iid=len(mods_tree.get_tree_items()),
                              text=mod[0], values=mod[1])
             if mods_tree.tag_has("checked_focus", mod[2]) or mods_tree.tag_has("checked", mod[2]):

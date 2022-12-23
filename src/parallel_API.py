@@ -11,7 +11,7 @@ from multiprocessing.pool import ThreadPool
 from pathlib import Path
 
 import requests
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 import API
 import tools
@@ -76,7 +76,7 @@ def update_tree_parallel(args):
     if len(inputs) != 0:
         mod_name_list = []
         mod_name_and_version_list = []
-        for result in tqdm(ThreadPool(len(inputs)).imap_unordered(get_latest_mod_info_separated, inputs), total=len(inputs)):
+        for result in tqdm(ThreadPool(len(inputs)).imap_unordered(get_latest_mod_info_separated, inputs), total=len(inputs), desc=str(category), unit="mods"):
             gui_elements.progressbar.config(value=gui_elements.progressbar["value"] + 1)
             mod_name_list.append(result[5][0])
             mod_name_and_version_list.append([result[5][0], result[2]])
