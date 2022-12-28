@@ -75,6 +75,8 @@ class Commands(ttk.LabelFrame):
         self.directory_entry.grid(row=0, column=0, padx=(0, 10), pady=(10, 0), sticky="ew")
         self.directory_entry.bind('<Return>', self.validation_mods_directory_on_return)
         Tooltip(self.directory_entry, text="Write the directory where you want to manage your mods")
+        self.directory_entry.insert(0, f"{os.getenv('APPDATA')}/.minecraft/mods".replace('\\', '/'))
+        tools.validation_directory(self, "mods_directory")
 
         self.directory_button = ttk.Button(self, text="...", command=lambda: tools.find_directory(self))
         self.directory_button.grid(row=0, column=1, pady=(10, 0))
@@ -316,7 +318,7 @@ class ModsList(ttk.LabelFrame):
         self.mods_list_scrollbar.config(command=mods_list_tree.yview)
         self.list = mods_list_tree
 
-        self.directory_entry.insert(0, f"{os.getcwd()}\\lists".replace('\\', '/'))
+        self.directory_entry.insert(0, f"{os.getcwd()}/lists".replace('\\', '/'))
         tools.validation_directory(self, "mods_list_directory")
 
         self.create_list_button = ttk.Button(self, text="Create a new mods list", command=lambda: tools.save_list_directory(mods_tree, self, text=f"Save a list with {len(mods_tree.get_checked())} mods as"))

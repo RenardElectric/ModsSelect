@@ -142,7 +142,7 @@ def get_mod_info_modrinth(mod_name, minecraft_version, loader):
         dependency = json.loads(str(dependency).replace("'", '"').replace("None", '"None"'))
         if dependency["dependency_type"] == "required" and dependency["project_id"] != "None":
             dependencies.append(dependency["project_id"])
-    mod_info = [mod_version["id"], mod_version["game_versions"], mod_version["version_number"].replace("\\", '-').replace("/", '-'), mod_version["files"][0]["url"], dependencies, mod_version["loaders"]]
+    mod_info = [mod_version["project_id"], mod_version["game_versions"], mod_version["version_number"].replace("\\", '-').replace("/", '-'), mod_version["files"][0]["url"], dependencies, mod_version["loaders"]]
     write_mod_info(mod_name, mod_info, "modrinth")
     return mod_info
 
