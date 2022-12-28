@@ -76,7 +76,6 @@ If you have any issues, feel free to open an issue. I will make sure that I resp
 ## Roadmap
 * Cleanup the code and add comments
 * store the assets folder inside the executable
-* Keep the changes of the config files when updating
 * Make the app faster
 
 

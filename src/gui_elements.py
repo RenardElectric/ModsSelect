@@ -11,16 +11,18 @@ import threading
 import tkinter as tk
 from multiprocessing.pool import ThreadPool
 from tkinter import ttk
-import ttkwidgets
-from tqdm.auto import tqdm
-from Tooltip import Tooltip
 
+import darkdetect
 import ntkutils
 import sv_ttk
+from tqdm.auto import tqdm
+from ttkwidgets.autohidescrollbar import AutoHideScrollbar
 
 import parallel_API
 import tools
+from AutocompleteEntry import AutocompleteEntry
 from CheckboxTreeview import CheckboxTreeview
+from Tooltip import Tooltip
 
 mods_list_tree = None
 mods_tree = None
@@ -50,10 +52,18 @@ class Commands(ttk.LabelFrame):
         self.directory_entry.validate()
 
     def change_minecraft_version(self, event):
-        tools.update_minecraft_version(self, self.parent.children.get('!mods'))
+        if not tools.minecraft_version == commands.minecraft_version_combo.get():
+            mods_class = self.parent.children.get('!mods')
+            tools.minecraft_version = commands.minecraft_version_combo.get()
+            if mods_class is not None:
+                threading.Thread(target=mods_class.update_tree, daemon=True).start()
 
     def change_minecraft_loader(self, event):
-        tools.update_minecraft_loader(self, self.parent.children.get('!mods'))
+        if not tools.minecraft_loader == commands.minecraft_loader_combo.get():
+            mods_class = self.parent.children.get('!mods')
+            tools.minecraft_loader = commands.minecraft_loader_combo.get()
+            if mods_class is not None:
+                threading.Thread(target=mods_class.update_tree, daemon=True).start()
 
     def change_environment(self):
         mods_class = self.parent.children.get('!mods')
@@ -103,7 +113,7 @@ class Commands(ttk.LabelFrame):
         self.update_button.grid(row=0, column=5, padx=10, pady=(10, 0))
         Tooltip(self.update_button, text="Update the mods in the selected directory to the minecraft version you chose")
 
-        self.switch = ttk.Checkbutton(self, text="Dark theme", style="Switch.TCheckbutton", variable=tk.BooleanVar(self, sv_ttk.get_theme() == "dark"), command=self.parent.change_theme)
+        self.switch = ttk.Checkbutton(self, text="Dark theme", style="Switch.TCheckbutton", command=self.parent.change_theme)
         self.switch.grid(row=0, column=6, columnspan=2, pady=10)
         Tooltip(self.switch, text="Switch from light to dark theme")
 
@@ -116,8 +126,6 @@ class Mods(ttk.LabelFrame):
     def __init__(self, parent):
         super().__init__(parent, style="Card.TFrame", padding=15, text="Mods")
 
-        self.columnconfigure(1, weight=0)
-
         self.add_widgets()
 
     def update_tree(self):
@@ -127,6 +135,8 @@ class Mods(ttk.LabelFrame):
             commands.minecraft_loader_combo["state"] = "disabled"
         except RuntimeError:
             print("error in Mods.update_tree")
+
+        self.autocomplete_entry["state"] = "disabled"
 
         categories = tools.categories
         args = []
@@ -147,6 +157,10 @@ class Mods(ttk.LabelFrame):
                 mod_list_sorted += result
         progressbar.config(value=0)
 
+        print(" "*300)
+        print(" "*300)
+        print(" "*300)
+
         progressbar.config(maximum=len(mod_list_sorted))
         for mod in tqdm(mod_list_sorted, desc="Mod tree", unit="mods"):
             mods_tree.insert(parent=mod[2], index="end", iid=len(mods_tree.get_tree_items()),
@@ -160,7 +174,7 @@ class Mods(ttk.LabelFrame):
         for mod in tools.mods_list:
             if mod["name"] not in mods_tree.get_tree_item_names():
                 mods.append(mod["name"])
-        print()
+        print(" "*300)
         print(f"{len(mods)} mods are not available for minecraft {tools.minecraft_version} for the {tools.minecraft_loader} mod loader: {mods}")
 
         try:
@@ -169,10 +183,32 @@ class Mods(ttk.LabelFrame):
         except RuntimeError:
             print("error in Mods.update_tree")
 
+        self.autocomplete_entry["state"] = "normal"
+        tree_item_names = mods_tree.get_tree_item_names()
+        for category_index in enumerate(categories):
+            tree_item_names.remove(mods_tree.item(category_index[0], "text"))
+        self.autocomplete_entry.set_completion_list(tree_item_names)
+
+    def validation_mod(self):
+        tree_item_names = mods_tree.get_tree_item_names()
+        for category_index in enumerate(tools.categories):
+            tree_item_names.remove(mods_tree.item(category_index[0], "text"))
+        if self.autocomplete_entry.get() in tree_item_names:
+            return True
+        return False
+
+    def validation_mods_on_return(self, event):
+        self.autocomplete_entry.validate()
+
     def add_widgets(self):
         global mods_tree
 
-        self.mods_scrollbar = ttkwidgets.AutoHideScrollbar(self)
+        self.autocomplete_entry = AutocompleteEntry(self, completevalues=[], validatecommand=self.validation_mod)
+        self.autocomplete_entry.pack(fill="x", pady=(0, 10))
+        self.autocomplete_entry.bind('<Return>', self.validation_mods_on_return)
+        Tooltip(self.autocomplete_entry, text="Search the mod you want to find")
+
+        self.mods_scrollbar = AutoHideScrollbar(self)
         self.mods_scrollbar.pack(side="right", fill="y")
 
         mods_tree = CheckboxTreeview(
@@ -220,7 +256,7 @@ class ModsList(ttk.LabelFrame):
     def update_tree(self, item_added=None):
         directory = tools.mods_list_directory
 
-        if tools.check_directory(directory):
+        if tools.check_directory(directory, silence=True):
             selection_iids = mods_list_tree.get_checked()
             selection_names = []
             for iid in selection_iids:
@@ -268,9 +304,9 @@ class ModsList(ttk.LabelFrame):
         Tooltip(self.directory_entry, text="Choose the directory where you want to manage your lists of mods")
 
         self.list_label = ttk.Label(self)
-        self.list_label.pack(padx=10, pady=(10, 0), expand=True, fill="both")
+        self.list_label.pack(padx=(10, 5), pady=(10, 0), expand=True, fill="both")
 
-        self.mods_list_scrollbar = ttkwidgets.AutoHideScrollbar(self.list_label)
+        self.mods_list_scrollbar = AutoHideScrollbar(self.list_label)
         self.mods_list_scrollbar.pack(side="right", fill="y")
 
         mods_list_tree = CheckboxTreeview(self.list_label, height=21, show="tree",
@@ -286,6 +322,7 @@ class ModsList(ttk.LabelFrame):
         self.create_list_button = ttk.Button(self, text="Create a new mods list", command=lambda: tools.save_list_directory(mods_tree, self, text=f"Save a list with {len(mods_tree.get_checked())} mods as"))
         self.create_list_button.pack(padx=10, pady=(10, 0), fill="x")
         Tooltip(self.create_list_button, text="Create a nes list of mods")
+
 
 def light_title_bar(window):
     window.update()
@@ -313,6 +350,24 @@ class App(tk.Frame):
 
         self.root = root
 
+        if darkdetect.theme() == "Dark":
+            sv_ttk.set_theme("dark")
+            ntkutils.dark_title_bar(root)
+            # bg_color = ttk.Style().lookup(".", "background")
+            # root.wm_attributes("-transparent", "blue")
+            # HWND = int(root.frame(), base=16)
+            # mc.ApplyMica(HWND, mc.MICAMODE.DARK)
+        else:
+            light_title_bar(root)
+            sv_ttk.set_theme("light")
+            # bg_color = ttk.Style().lookup(".", "background")
+            # root.wm_attributes("-transparent", bg_color)
+            # HWND = int(root.frame(), base=16)
+            # mc.ApplyMica(HWND, mc.MICAMODE.LIGHT)
+        mods_list_tree.update_theme()
+        mods_tree.update_theme()
+        commands.switch.config(variable=tk.BooleanVar(self, sv_ttk.get_theme() == "dark"))
+
         self.mods = ["Mods", len(mods_tree.get_checked()), len(mods_tree.get_children())]
         self.categories = []
         categories = tools.categories
@@ -324,9 +379,9 @@ class App(tk.Frame):
 
     def change_theme(self):
         sv_ttk.toggle_theme()
-        self.set_title_bar()
         mods_list_tree.update_theme()
         mods_tree.update_theme()
+        self.set_title_bar()
 
     def set_title_bar(self):
         if sv_ttk.get_theme() == "dark":

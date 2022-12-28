@@ -20,8 +20,8 @@ import gui_elements
 lock = threading.Lock()
 
 
-def get_latest_mod_info_separated(args):
-    mod = args[0]
+def get_latest_mod_info_separated(arg):
+    mod = arg
     mod_and_site = [mod["name"], API.get_mod_site(mod["name"], tools.minecraft_version, tools.minecraft_loader)]
     latest_mod_info = API.get_latest_mod_info(mod_and_site, tools.minecraft_version, tools.minecraft_loader)
     if not latest_mod_info:
@@ -69,7 +69,7 @@ def update_tree_parallel(args):
 
     for mod in mod_list:
         if mod["category"] == category:
-            inputs.append((mod, category))
+            inputs.append(mod)
         elif mod["category"] is None and category == "Other":
             inputs.append(mod)
 

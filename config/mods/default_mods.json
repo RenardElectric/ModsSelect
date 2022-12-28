@@ -1,0 +1,236 @@
+[
+    {
+        "name": "guns-without-roses",
+        "category": "Equipment",
+        "id": "3LTKqzfc",
+        "site": "modrinth"
+    },
+    {
+        "name": "gravity-api",
+        "category": "Game Mechanics",
+        "id": "mk4Axoxa",
+        "site": "modrinth"
+    },
+    {
+        "name": "pehkui",
+        "category": "Game Mechanics",
+        "id": "J8DnNDOS",
+        "site": "modrinth"
+    },
+    {
+        "name": "xaeros-minimap",
+        "category": "Map and Information",
+        "id": 263420,
+        "site": "curseforge"
+    },
+    {
+        "name": "xaeros-world-map",
+        "category": "Map and Information",
+        "id": 317780,
+        "site": "curseforge"
+    },
+    {
+        "name": "entityculling",
+        "category": "Optimization",
+        "id": "4GD4dwQK",
+        "site": "modrinth"
+    },
+    {
+        "name": "ferrite-core",
+        "category": "Optimization",
+        "id": "776Z5oW9",
+        "site": "modrinth"
+    },
+    {
+        "name": "forgetmechunk",
+        "category": "Optimization",
+        "id": "yX5SANL7",
+        "site": "modrinth"
+    },
+    {
+        "name": "indium",
+        "category": "Optimization",
+        "id": "H45YVREb",
+        "site": "modrinth"
+    },
+    {
+        "name": "iris",
+        "category": "Optimization",
+        "id": "zKrz2FCx",
+        "site": "modrinth"
+    },
+    {
+        "name": "krypton",
+        "category": "Optimization",
+        "id": "vJQ7plH2",
+        "site": "modrinth"
+    },
+    {
+        "name": "lazydfu",
+        "category": "Optimization",
+        "id": "C6e265zK",
+        "site": "modrinth"
+    },
+    {
+        "name": "lithium",
+        "category": "Optimization",
+        "id": "ALnv7Npy",
+        "site": "modrinth"
+    },
+    {
+        "name": "memoryleakfix",
+        "category": "Optimization",
+        "id": "fDYPSGrC",
+        "site": "modrinth"
+    },
+    {
+        "name": "moreculling",
+        "category": "Optimization",
+        "id": "d2OS47y6",
+        "site": "modrinth"
+    },
+    {
+        "name": "phosphor",
+        "category": "Optimization",
+        "id": "HG1UaV1y",
+        "site": "modrinth"
+    },
+    {
+        "name": "reeses-sodium-options",
+        "category": "Optimization",
+        "id": "hl16W0ql",
+        "site": "modrinth"
+    },
+    {
+        "name": "sodium",
+        "category": "Optimization",
+        "id": "74Y5Z8fo",
+        "site": "modrinth"
+    },
+    {
+        "name": "sodium-extra",
+        "category": "Optimization",
+        "id": "XVg96BXq",
+        "site": "modrinth"
+    },
+    {
+        "name": "starlight",
+        "category": "Optimization",
+        "id": "4ew9whL8",
+        "site": "modrinth"
+    },
+    {
+        "name": "no-chat-reports",
+        "category": "Social",
+        "id": "g2k50qYw",
+        "site": "modrinth"
+    },
+    {
+        "name": "create",
+        "category": "Technology",
+        "id": "8u9atQ9x",
+        "site": "modrinth"
+    },
+    {
+        "name": "create-fabric",
+        "category": "Technology",
+        "id": "aCFWhh4m",
+        "site": "modrinth"
+    },
+    {
+        "name": "catalogue-fabric",
+        "category": "Utility & QoL",
+        "id": 667377,
+        "site": "curseforge"
+    },
+    {
+        "name": "configured-fabric",
+        "category": "Utility & QoL",
+        "id": 667378,
+        "site": "curseforge"
+    },
+    {
+        "name": "extrasounds",
+        "category": "Utility & QoL",
+        "id": "GCijgCUB",
+        "site": "modrinth"
+    },
+    {
+        "name": "fallingtree",
+        "category": "Utility & QoL",
+        "id": "5DSiBB1r",
+        "site": "modrinth"
+    },
+    {
+        "name": "identity",
+        "category": "Utility & QoL",
+        "id": 391390,
+        "site": "curseforge"
+    },
+    {
+        "name": "immersiveportals",
+        "category": "Utility & QoL",
+        "id": "Vy2AI68l",
+        "site": "modrinth"
+    },
+    {
+        "name": "item-model-fix",
+        "category": "Utility & QoL",
+        "id": "2wahupe6",
+        "site": "modrinth"
+    },
+    {
+        "name": "lambdynamiclights",
+        "category": "Utility & QoL",
+        "id": "zhBXhMhZ",
+        "site": "modrinth"
+    },
+    {
+        "name": "modmenu",
+        "category": "Utility & QoL",
+        "id": "nVxObSbX",
+        "site": "modrinth"
+    },
+    {
+        "name": "mouse-wheelie",
+        "category": "Utility & QoL",
+        "id": "5q5ojaBJ",
+        "site": "modrinth"
+    },
+    {
+        "name": "open-parties-and-claims",
+        "category": "Utility & QoL",
+        "id": "SXZNcoFm",
+        "site": "modrinth"
+    },
+    {
+        "name": "presence-footsteps",
+        "category": "Utility & QoL",
+        "id": "31QS6G6Z",
+        "site": "modrinth"
+    },
+    {
+        "name": "roughly-enough-items",
+        "category": "Utility & QoL",
+        "id": "UgtSUIu0",
+        "site": "modrinth"
+    },
+    {
+        "name": "sound-physics-remastered",
+        "category": "Utility & QoL",
+        "id": "vugO7mNF",
+        "site": "modrinth"
+    },
+    {
+        "name": "zoomify",
+        "category": "Utility & QoL",
+        "id": "sC6H3PnU",
+        "site": "modrinth"
+    },
+    {
+        "name": "worldedit",
+        "category": "World Generation",
+        "id": 225608,
+        "site": "curseforge"
+    }
+]

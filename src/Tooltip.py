@@ -1,5 +1,5 @@
 """
-Author: RedFantom and RenardElectric
+Authors: RedFantom and RenardElectric
 License: GNU GPLv3
 Source: ttkwidgets and ModsSelect
 """

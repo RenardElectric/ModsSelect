@@ -6,11 +6,10 @@ Source: ModsSelect
 """
 
 import json
+import os
 import tkinter as tk
 
-import darkdetect
 import ntkutils
-import sv_ttk
 
 import gui_elements
 import tools
@@ -18,26 +17,9 @@ import tools
 
 def main_gui():
     root.title(" ModsSelect ")
-    root.geometry("875x825")
+    root.geometry("890x825")
     # root.resizable(False, False)
     # root.attributes('-topmost', True)
-
-    if darkdetect.theme() == "Dark":
-        sv_ttk.set_theme("dark")
-        ntkutils.dark_title_bar(root)
-        # bg_color = ttk.Style().lookup(".", "background")
-        # root.wm_attributes("-transparent", "blue")
-        # HWND = int(root.frame(), base=16)
-        # mc.ApplyMica(HWND, mc.MICAMODE.DARK)
-    else:
-        gui_elements.light_title_bar(root)
-        sv_ttk.set_theme("light")
-        # bg_color = ttk.Style().lookup(".", "background")
-        # root.wm_attributes("-transparent", bg_color)
-        # HWND = int(root.frame(), base=16)
-        # mc.ApplyMica(HWND, mc.MICAMODE.LIGHT)
-
-    root.update()
 
     gui_elements.App(root).pack(expand=True, fill="both", padx=15, pady=15)
 
@@ -52,8 +34,16 @@ if __name__ == "__main__":
     with open("config/minecraft_versions.json", "r", encoding="UTF-8") as file:
         tools.minecraft_versions = json.loads(file.read())
 
-    with open("config/mods.json", "r") as file:
-        tools.mods_list = json.loads(file.read())
+    mod_names = []
+
+    for file in os.listdir("config/mods"):
+        with open(f"config/mods/{file}", "r") as mods:
+            mods = json.loads(mods.read())
+            for mod in mods:
+                if mod["name"] not in mod_names:
+                    tools.mods_list.append(mod)
+                    mod_names.append(mod["name"])
+
     tools.mods_list_length = len(tools.mods_list)
 
     categories = []
@@ -67,9 +57,17 @@ if __name__ == "__main__":
     main_gui()
 
     def on_closing():
-        json_object = json.dumps(tools.mods_list, indent=4)
-        with open("config/mods.json", "w") as outfile:
-            outfile.write(json_object)
+        # json_object = json.dumps(tools.mods_list, indent=4)
+        for file in os.listdir("config/mods"):
+            mods_list = []
+            with open(f"config/mods/{file}", "r") as mods:
+                mods = json.loads(mods.read())
+                for mod in mods:
+                    for mod_info in tools.mods_list:
+                        if mod["name"] == mod_info["name"]:
+                            mods_list.append(mod_info)
+            with open(f"config/mods/{file}", "w") as outfile:
+                outfile.write(json.dumps(mods_list, indent=4))
         root.destroy()
 
     root.protocol("WM_DELETE_WINDOW", on_closing)

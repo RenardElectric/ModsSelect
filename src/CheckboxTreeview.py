@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Author: Juliette Monsel and RenardElectric
+Authors: Juliette Monsel and RenardElectric
 License: GNU GPLv3
 Source: ttkwidgets and ModsSelect
 
@@ -201,6 +201,7 @@ class CheckboxTreeview(ttk.Treeview):
         return ttk.Treeview.insert(self, parent, index, iid, **kw)
 
     def set_selection(self, *items):
+        self._unfocus_all()
         self.selection_set(items)
         self.focus_selection(items)
 
@@ -474,8 +475,8 @@ class CheckboxTreeview(ttk.Treeview):
 
     def _box_pressed(self, event):
         """Check or uncheck box when clicked."""
-        x, y, widget = event.x, event.y, event.widget
-        elem = widget.identify("element", x, y)
+        x, y = event.x, event.y
+        elem = self.identify("element", x, y)
         item = self.identify_row(y)
         if item != "":
             self._update_selection(item)
@@ -489,8 +490,8 @@ class CheckboxTreeview(ttk.Treeview):
 
     def _box_click(self, event):
         """Check or uncheck box when clicked."""
-        x, y, widget = event.x, event.y, event.widget
-        elem = widget.identify("element", x, y)
+        x, y = event.x, event.y
+        elem = self.identify("element", x, y)
         if len(self.get_items_order()) < self.item_selected + 1:
             return
         item = self.get_items_order()[self.item_selected]
@@ -510,8 +511,8 @@ class CheckboxTreeview(ttk.Treeview):
 
     def get_mods_selection_iid(self, iid, directory):
         selection = []
-        with json.loads(open(f'{directory}\\{self.item(iid, "text")}', "r", encoding="UTF-8").read()) as mods:
-            for mod in mods:
+        with open(f'{directory}\\{self.item(iid, "text")}', "r", encoding="UTF-8") as mods:
+            for mod in json.loads(mods.read()):
                 selection.append(mod)
             return selection
 

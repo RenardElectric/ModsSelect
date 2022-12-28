@@ -6,7 +6,6 @@ Source: ModsSelect
 """
 
 import os
-import threading
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import messagebox
@@ -26,12 +25,13 @@ mods_list_length = ""
 categories_length = ""
 
 
-def check_directory(directory):
+def check_directory(directory, silence=None):
     if not directory == "":
         if os.path.isdir(directory):
             return True
-        print()
-        print("the directory does not exist")
+        if silence is None:
+            print()
+            print("the directory does not exist")
     return False
 
 
@@ -96,22 +96,6 @@ def save_list_directory(mods_tree, modslist, text=None):
     print(f"Saved a list with {len(mods_tree_)} mods in it")
 
     modslist.update_tree(file.name.split("/")[-1])
-
-
-def update_minecraft_version(commands, mods_class):
-    global minecraft_version
-    if not minecraft_version == commands.minecraft_version_combo.get():
-        minecraft_version = commands.minecraft_version_combo.get()
-        if mods_class is not None:
-            threading.Thread(target=mods_class.update_tree, daemon=True).start()
-
-
-def update_minecraft_loader(commands, mods_class):
-    global minecraft_loader
-    if not minecraft_loader == commands.minecraft_loader_combo.get():
-        minecraft_loader = commands.minecraft_loader_combo.get()
-        if mods_class is not None:
-            threading.Thread(target=mods_class.update_tree, daemon=True).start()
 
 
 def delete_mods(self):
