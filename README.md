@@ -46,19 +46,19 @@ With this app you can:
 ### Modifying config files
 - You can change the config files to add other minecraft versions or add other mods
 
-    > **Warning**  
-    > As of now, when you update the app, the config files are reset. Be sure to save them before updating if you changed them
-
     ### Adding another minecraft version to the app
+    > **Warning**  
+    > When you update the app, the config file for the minecraft versions is reset. Be sure to save it before updating if you changed it
+    
     ``{ModsSelect Location}/config/minecraft_versions.json``
   * Add here all the minecraft versions you want
 
   ### Adding your own mods to the app
-  ``{ModsSelect Location}/config/mods.json``
+  ``{ModsSelect Location}/config/mods/yourfile.json``
   ```json
    {
      "name": "Mod name", 
-      "category":null, 
+     "category":null, 
      "id":null, 
      "site":null
    }
