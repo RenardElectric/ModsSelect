@@ -89,6 +89,8 @@ ttkwidgets for the CheckboxTreeview and the Tooltip that I modified
 
 sv_ttk for the sun valley theme
 
+PicoPlanetDev for the custom titlebar that I modified
+
 
 ## License
 This work is licensed under the GNU General Public License v3.0

@@ -14,11 +14,14 @@ import gui_elements
 import modsSelector
 import API
 
-mods_directory = ""
-mods_list_directory = ""
-minecraft_version = ""
-minecraft_loader = ""
 minecraft_versions = []
+minecraft_versions_compatible = []
+mods_directory = f"{os.getenv('APPDATA')}/.minecraft/mods".replace('\\', '/')
+minecraft_version = "1.19.3"
+minecraft_version_compatible = []
+mod_loader = "fabric"
+allow_compatible_versions = False
+lists_directory = f"{os.getcwd()}/lists".replace('\\', '/')
 mods_list = []
 categories = []
 mods_list_length = ""
@@ -50,8 +53,8 @@ def validation_directory(self, directory):
         global mods_directory
         mods_directory = _directory
     elif directory == "mods_list_directory":
-        global mods_list_directory
-        mods_list_directory = _directory
+        global lists_directory
+        lists_directory = _directory
         self.update_tree()
 
     if check_directory(_directory):
@@ -64,7 +67,7 @@ def find_directory(self):
     if str(self.directory_entry.winfo_parent()) == ".!app.!commands":
         mods_directory_ = filedialog.askdirectory(initialdir=mods_directory)
     else:
-        mods_directory_ = filedialog.askdirectory(initialdir=mods_list_directory)
+        mods_directory_ = filedialog.askdirectory(initialdir=lists_directory)
     if not mods_directory_ == "":
         mods_directory = mods_directory_
         self.directory_entry.delete(0, tk.END)
@@ -75,7 +78,7 @@ def find_directory(self):
 def save_list_directory(mods_tree, modslist, text=None):
     selection = gui_elements.mods_list_tree.get_mods_selection()
 
-    file = tk.filedialog.asksaveasfile(initialfile='Untitled.json', filetypes=[('Json Document', '*.json')], defaultextension=".json", title=text, initialdir=mods_list_directory)
+    file = tk.filedialog.asksaveasfile(initialfile='Untitled.json', filetypes=[('Json Document', '*.json')], defaultextension=".json", title=text, initialdir=lists_directory)
     if file is None:
         mods_tree.uncheck_selection_name(selection)
         modslist.update_tree()
@@ -98,8 +101,7 @@ def save_list_directory(mods_tree, modslist, text=None):
     modslist.update_tree(file.name.split("/")[-1])
 
 
-def delete_mods(self):
-    self.delete_button["state"] = "disabled"
+def delete_mods():
     if not check_directory(mods_directory):
         messagebox.showerror("Unknown directory", "The selected directory does not exist")
     else:
@@ -117,7 +119,6 @@ def delete_mods(self):
         else:
             print()
             print("deletion canceled")
-    self.delete_button["state"] = "enabled"
 
 
 def update_mods(self):
@@ -142,7 +143,7 @@ def download_mods(self):
         answer = messagebox.askyesnocancel("Download dependencies", "Do you want to download the dependencies ?")
         selected_mods_and_site = []
         for mod in selected_mods:
-            selected_mods_and_site.append([mod, API.get_mod_site(mod, minecraft_version, minecraft_loader)])
+            selected_mods_and_site.append([mod, API.get_mod_site(mod, minecraft_version, mod_loader)])
         if answer:
             modsSelector.download_mods_and_dependencies(selected_mods_and_site, minecraft_version, mods_directory)
         elif answer is not None:

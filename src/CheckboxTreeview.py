@@ -424,10 +424,15 @@ class CheckboxTreeview(ttk.Treeview):
                 self._uncheck_ancestor(iid)
 
     def check_selection_name(self, selection):
+        mods_not_found = selection
         for iid in self.get_tree_items():
             if self.item(iid, "text") in selection:
                 self._check_ancestor(iid)
                 self._check_descendant(iid)
+                mods_not_found.remove(self.item(iid, "text"))
+        print()
+        print()
+        print(f"{len(mods_not_found)} mods not found for these lists of mods: {mods_not_found}")
         self.focus_selection(self.selection())
 
     def uncheck_selection_name(self, selection):
@@ -517,7 +522,7 @@ class CheckboxTreeview(ttk.Treeview):
             return selection
 
     def get_mods_selection(self, item=None):
-        directory = tools.mods_list_directory
+        directory = tools.lists_directory
         if not tools.check_directory(directory):
             return None
 

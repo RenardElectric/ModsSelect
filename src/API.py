@@ -29,7 +29,7 @@ def open_url(url, headers=None, params=None):
         request = urllib.request.urlopen(req)
     except urllib.error.HTTPError as e:
         if e.code == 429:
-            print(f'    sleeping for: {e.headers.get("X-Ratelimit-Reset")}s')
+            print(f'    sleeping for {e.headers.get("X-Ratelimit-Reset")}s')
             time.sleep(int(e.headers.get("X-Ratelimit-Reset")) + 1)
             print('    waking up')
             request = urllib.request.urlopen(url)
@@ -59,7 +59,7 @@ def get_mod_id_from_name_curseforge(mod_name, minecraft_version, loader):
         "gameVersion": str(minecraft_version).replace("'", '"'),
         "modLoaderType": 1 if loader == "forge" else 4 if loader == "fabric" else 5,
         "gameId": 432,
-        "slug": str(mod_name).replace("'", '"'),
+        "slug": str(mod_name).lower().replace("'", '"'),
         "sortOrder": "desc"
     }
     url = "https://api.curseforge.com/v1/mods/search"
@@ -157,20 +157,20 @@ def get_latest_mod_info(mod_and_site, minecraft_version, loader):
 
 def get_latest_mod_version_name(mod_and_site, minecraft_version):
     """ returns the version of the latest mod's minecraft version, if it cannot find throws an error """
-    latest_mod_info = get_latest_mod_info(mod_and_site, minecraft_version, tools.minecraft_loader)
+    latest_mod_info = get_latest_mod_info(mod_and_site, minecraft_version, tools.mod_loader)
     if not latest_mod_info:
         return None
     return latest_mod_info[2]
 
 
 def get_latest_mod_dependencies(mod_and_site, minecraft_version):
-    latest_mod_info = get_latest_mod_info(mod_and_site, minecraft_version, tools.minecraft_loader)
+    latest_mod_info = get_latest_mod_info(mod_and_site, minecraft_version, tools.mod_loader)
     if not latest_mod_info:
         return None
     dependencies = []
     for dependency in latest_mod_info[4]:
         name = get_mod_name(dependency, mod_and_site[1])
-        site = get_mod_site(name, minecraft_version, tools.minecraft_loader)
+        site = get_mod_site(name, minecraft_version, tools.mod_loader)
         dependencies.append([name, site])
     return dependencies
 
@@ -211,5 +211,5 @@ def get_mod_site(mod_name, minecraft_version, loader):
 
 def returns_download_mod_url(mod_and_site, minecraft_version):
     """ returns the url to download the mod and the mod's file name """
-    mod_version_id, minecraft_versions, mod_version_name, mod_version_url, mod_dependencies, loaders = get_latest_mod_info(mod_and_site, minecraft_version, tools.minecraft_loader)
+    mod_version_id, minecraft_versions, mod_version_name, mod_version_url, mod_dependencies, loaders = get_latest_mod_info(mod_and_site, minecraft_version, tools.mod_loader)
     return mod_version_url, f"{mod_and_site[0]}~{minecraft_version}~{mod_version_name}.jar"

@@ -122,7 +122,7 @@ def update_mods(directory, minecraft_version):
     mod_update_list = get_mods_update_list(directory, minecraft_version)
     if len(mod_update_list) != 0:
         for mods in mod_update_list:
-            update_mod_name_and_platform.append([mods[0], API.get_mod_site(mods[0], tools.minecraft_version, tools.minecraft_loader)])
+            update_mod_name_and_platform.append([mods[0], API.get_mod_site(mods[0], tools.minecraft_version, tools.mod_loader)])
         delete_mods(directory, update_mod_name_and_platform)
         download_mods(update_mod_name_and_platform, minecraft_version, directory)
         print()

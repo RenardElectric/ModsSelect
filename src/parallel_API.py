@@ -22,8 +22,13 @@ lock = threading.Lock()
 
 def get_latest_mod_info_separated(arg):
     mod = arg
-    mod_and_site = [mod["name"], API.get_mod_site(mod["name"], tools.minecraft_version, tools.minecraft_loader)]
-    latest_mod_info = API.get_latest_mod_info(mod_and_site, tools.minecraft_version, tools.minecraft_loader)
+    mod_and_site = [mod["name"], API.get_mod_site(mod["name"], tools.minecraft_version, tools.mod_loader)]
+    latest_mod_info = API.get_latest_mod_info(mod_and_site, tools.minecraft_version, tools.mod_loader)
+    if tools.allow_compatible_versions.get() and latest_mod_info is None:
+        for index in enumerate(tools.minecraft_version_compatible):
+            latest_mod_info = API.get_latest_mod_info(mod_and_site, tools.minecraft_version_compatible[index[0]], tools.mod_loader)
+            if latest_mod_info is not None:
+                break
     if not latest_mod_info:
         return None, None, None, None, None, mod_and_site
     return latest_mod_info[0], latest_mod_info[1], latest_mod_info[2], latest_mod_info[3], latest_mod_info[4], mod_and_site
@@ -39,7 +44,7 @@ def returns_mods_update_list(args):
     """ returns the name of the mod to update and the time it took to get it """
     mod_file, minecraft_version = args[0], args[1]
     mod_components = mod_file.split("~")
-    latest_mod_version_name = API.get_latest_mod_version_name([mod_components[0], API.get_mod_site(mod_components[0], tools.minecraft_version, tools.minecraft_loader)], minecraft_version)
+    latest_mod_version_name = API.get_latest_mod_version_name([mod_components[0], API.get_mod_site(mod_components[0], tools.minecraft_version, tools.mod_loader)], minecraft_version)
     if not mod_components[2].replace(".jar", "", 1) == latest_mod_version_name and latest_mod_version_name is not None:
         return mod_components[0], minecraft_version
     return None
@@ -68,9 +73,10 @@ def update_tree_parallel(args):
     inputs = []
 
     for mod in mod_list:
-        if mod["category"] == category:
-            inputs.append(mod)
-        elif mod["category"] is None and category == "Other":
+        if mod["categories"] is None:
+            if category == "Other":
+                inputs.append(mod)
+        elif category in mod["categories"]:
             inputs.append(mod)
 
     if len(inputs) != 0:
